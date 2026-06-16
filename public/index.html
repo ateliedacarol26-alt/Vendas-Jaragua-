@@ -6,6 +6,7 @@
 <meta name="description" content="Classificados Jaraguá do Sul - Compre, Venda e Divulgue em Jaraguá do Sul. Anúncios de veículos, imóveis, eletrônicos, empregos e muito mais.">
 <meta name="keywords" content="classificados jaraguá do sul, comprar jaraguá do sul, vender jaraguá do sul, empregos jaraguá do sul, veículos jaraguá do sul">
 <title>Classificados Jaraguá - Compre, Venda e Divulgue em Jaraguá do Sul</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
   :root {
     --blue-dark: #0D2B4E;
@@ -323,8 +324,10 @@
   <div class="inner">
     <span>📍 Jaraguá do Sul, SC — Portal de Classificados #1 da Região</span>
     <div>
-      <a onclick="showModal('loginModal')">Entrar</a>
-      <a onclick="showModal('registerModal')">Cadastrar</a>
+      <span id="topbarUserArea">
+        <a onclick="showModal('loginModal')">Entrar</a>
+        <a onclick="showModal('registerModal')">Cadastrar</a>
+      </span>
       <a onclick="gotoAdmin()" style="cursor:pointer">Admin</a>
     </div>
   </div>
@@ -414,6 +417,37 @@
       <a class="section-link">Ver todas →</a>
     </div>
     <div class="cats-grid" id="categoriesGrid"></div>
+  </div>
+
+  <!-- MAPA DA REGIÃO -->
+  <div class="section" style="padding-top:0">
+    <div class="section-header">
+      <div class="section-title">🗺️ Nossa Região de Cobertura</div>
+      <span style="font-size:13px;color:var(--gray-400)">Jaraguá do Sul · Guaramirim · Schroeder</span>
+    </div>
+    <div style="border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.10);border:1px solid var(--gray-200)">
+      <iframe
+        src="https://maps.google.com/maps?q=Jaraguá+do+Sul,+SC,+Brasil&output=embed&z=11&hl=pt-BR"
+        width="100%" height="320" frameborder="0" style="border:0;display:block"
+        allowfullscreen loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Mapa de Jaraguá do Sul">
+      </iframe>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
+      <a href="https://maps.google.com/maps?q=Jaraguá+do+Sul,SC" target="_blank"
+         style="font-size:13px;color:var(--blue-light);font-weight:600;text-decoration:none">
+        📍 Ver Jaraguá do Sul no Google Maps →
+      </a>
+      <a href="https://maps.google.com/maps?q=Guaramirim,SC" target="_blank"
+         style="font-size:13px;color:var(--blue-light);font-weight:600;text-decoration:none">
+        📍 Guaramirim →
+      </a>
+      <a href="https://maps.google.com/maps?q=Schroeder,SC" target="_blank"
+         style="font-size:13px;color:var(--blue-light);font-weight:600;text-decoration:none">
+        📍 Schroeder →
+      </a>
+    </div>
   </div>
 
   <!-- DESTAQUES CAROUSEL -->
@@ -829,9 +863,7 @@
   <div class="modal" style="max-width:420px">
     <button class="modal-close" onclick="closeModal('loginModal')">×</button>
     <div class="modal-title">Entrar na sua conta</div>
-    <button class="social-btn" onclick="showNotif('Login com Google em breve!','info')">
-      <span style="font-size:18px">🔵</span> Continuar com Google
-    </button>
+    <div id="googleLoginBtnContainer" style="display:flex;justify-content:center;margin-bottom:10px;min-height:44px"></div>
     <button class="social-btn" onclick="showNotif('Login com Facebook em breve!','info')">
       <span style="font-size:18px">📘</span> Continuar com Facebook
     </button>
@@ -857,9 +889,7 @@
   <div class="modal" style="max-width:440px">
     <button class="modal-close" onclick="closeModal('registerModal')">×</button>
     <div class="modal-title">Criar conta grátis</div>
-    <button class="social-btn" onclick="showNotif('Cadastro com Google em breve!','info')">
-      <span style="font-size:18px">🔵</span> Cadastrar com Google
-    </button>
+    <div id="googleRegisterBtnContainer" style="display:flex;justify-content:center;margin-bottom:10px;min-height:44px"></div>
     <button class="social-btn" onclick="showNotif('Cadastro com Facebook em breve!','info')">
       <span style="font-size:18px">📘</span> Cadastrar com Facebook
     </button>
@@ -1785,6 +1815,109 @@ document.getElementById('hbsPrev').addEventListener('click', () => { hbsGoTo(hbs
 document.getElementById('hbsNext').addEventListener('click', () => { hbsGoTo(hbsIndex + 1); hbsStartAuto(); });
 
 // ============================================================
+// GOOGLE SIGN-IN
+// ============================================================
+let currentUser      = JSON.parse(localStorage.getItem('currentUser') || 'null');
+let userSessionToken = localStorage.getItem('userToken') || null;
+
+function updateUserUI() {
+  const area = document.getElementById('topbarUserArea');
+  if (!area) return;
+  if (currentUser) {
+    const firstName = currentUser.name ? currentUser.name.split(' ')[0] : 'Você';
+    const pic = currentUser.picture
+      ? `<img src="${currentUser.picture}" style="width:22px;height:22px;border-radius:50%;vertical-align:middle;margin-right:4px" referrerpolicy="no-referrer">`
+      : '👤';
+    area.innerHTML = `
+      <span style="color:rgba(255,255,255,0.85);font-weight:600">${pic} ${firstName}</span>
+      <a onclick="userLogout()" style="color:rgba(255,255,255,0.65);cursor:pointer;font-size:13px">Sair</a>`;
+  } else {
+    area.innerHTML = `
+      <a onclick="showModal('loginModal')">Entrar</a>
+      <a onclick="showModal('registerModal')">Cadastrar</a>`;
+  }
+}
+
+async function handleGoogleCredential(response) {
+  try {
+    const res  = await fetch('/api/auth/google', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ credential: response.credential })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      currentUser      = data.user;
+      userSessionToken = data.token;
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      localStorage.setItem('userToken', userSessionToken);
+      closeModal('loginModal');
+      closeModal('registerModal');
+      updateUserUI();
+      const name = currentUser.name ? currentUser.name.split(' ')[0] : 'você';
+      showNotif(`👋 Bem-vindo(a), ${name}!`, '');
+    } else {
+      showNotif(data.error || 'Erro ao autenticar. Tente novamente.', 'error');
+    }
+  } catch (e) {
+    showNotif('Erro de conexão ao autenticar.', 'error');
+  }
+}
+
+async function userLogout() {
+  try {
+    await fetch('/api/auth/user-logout', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${userSessionToken}` }
+    });
+  } catch(_) {}
+  currentUser      = null;
+  userSessionToken = null;
+  localStorage.removeItem('currentUser');
+  localStorage.removeItem('userToken');
+  updateUserUI();
+  showNotif('Sessão encerrada.', 'info');
+}
+
+function initGoogleSignIn(clientId) {
+  if (typeof google === 'undefined' || !google.accounts) {
+    setTimeout(() => initGoogleSignIn(clientId), 400);
+    return;
+  }
+  google.accounts.id.initialize({
+    client_id: clientId,
+    callback: handleGoogleCredential,
+    auto_select: false,
+    cancel_on_tap_outside: true
+  });
+  const renderBtn = (containerId) => {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    google.accounts.id.renderButton(el, {
+      theme: 'outline', size: 'large', type: 'standard',
+      text: 'continue_with', shape: 'rectangular', width: 370
+    });
+  };
+  renderBtn('googleLoginBtnContainer');
+  renderBtn('googleRegisterBtnContainer');
+}
+
+async function loadGoogleConfig() {
+  try {
+    const res  = await fetch('/api/config');
+    const data = await res.json();
+    if (data.googleClientId) {
+      initGoogleSignIn(data.googleClientId);
+    } else {
+      ['googleLoginBtnContainer','googleRegisterBtnContainer'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = `<div style="color:var(--gray-400);font-size:12px;padding:8px 0">Login com Google não configurado</div>`;
+      });
+    }
+  } catch(e) { /* ignore */ }
+}
+
+// ============================================================
 // INIT
 // ============================================================
 renderCats();
@@ -1796,6 +1929,8 @@ renderAdsGrid();
 renderAdminTable();
 renderDashTable();
 renderPlanTable();
+updateUserUI();
+loadGoogleConfig();
 </script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 const http   = require('http');
+const https  = require('https');
 const fs     = require('fs');
 const path   = require('path');
 const crypto = require('crypto');
@@ -13,6 +14,7 @@ const ADMIN_PASSWORD  = process.env.ADMIN_PASSWORD || 'Admin@2025';
 
 const pool           = new Pool({ connectionString: process.env.DATABASE_URL });
 const activeSessions = new Set();
+const userSessions   = new Map(); // token → { id, name, email, picture }
 
 // ── helpers ────────────────────────────────────────────────────────────────
 function parseBody(req) {
@@ -30,6 +32,16 @@ function parseBody(req) {
 function jsonRes(res, status, data) {
   res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8' });
   res.end(JSON.stringify(data));
+}
+
+function httpsGet(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, res => {
+      let data = '';
+      res.on('data', c => { data += c; });
+      res.on('end', () => resolve(data));
+    }).on('error', reject);
+  });
 }
 
 function matchRoute(url, pattern) {
@@ -90,6 +102,71 @@ const server = http.createServer(async (req, res) => {
     const token = auth.replace(/^Bearer\s+/i, '').trim();
     activeSessions.delete(token);
     return jsonRes(res, 200, { ok: true });
+  }
+
+  // ── GET /api/config  (public — exposes non-secret config) ──
+  if (url === '/api/config' && method === 'GET') {
+    return jsonRes(res, 200, {
+      googleClientId: process.env.GOOGLE_CLIENT_ID || null
+    });
+  }
+
+  // ── POST /api/auth/google  (Google Sign-In credential verification) ──
+  if (url === '/api/auth/google' && method === 'POST') {
+    try {
+      const body       = await parseBody(req);
+      const { credential } = body;
+      if (!credential) return jsonRes(res, 400, { ok: false, error: 'Credencial ausente.' });
+
+      const clientId = process.env.GOOGLE_CLIENT_ID;
+      if (!clientId) return jsonRes(res, 503, { ok: false, error: 'Login com Google não configurado.' });
+
+      const raw     = await httpsGet(`https://oauth2.googleapis.com/tokeninfo?id_token=${credential}`);
+      const payload = JSON.parse(raw);
+
+      if (payload.error_description || payload.error)
+        return jsonRes(res, 401, { ok: false, error: 'Token Google inválido.' });
+
+      if (payload.aud !== clientId)
+        return jsonRes(res, 401, { ok: false, error: 'Token de origem incorreta.' });
+
+      const { rows } = await pool.query(
+        `INSERT INTO users (google_id, name, email, picture)
+         VALUES ($1, $2, $3, $4)
+         ON CONFLICT (google_id) DO UPDATE
+           SET name=EXCLUDED.name, picture=EXCLUDED.picture, email=EXCLUDED.email
+         RETURNING id, name, email, picture`,
+        [payload.sub, payload.name, payload.email, payload.picture]
+      );
+      const user  = rows[0];
+      const token = crypto.randomBytes(32).toString('hex');
+      userSessions.set(token, { id: user.id, name: user.name, email: user.email, picture: user.picture });
+
+      return jsonRes(res, 200, {
+        ok: true, token,
+        user: { name: user.name, email: user.email, picture: user.picture }
+      });
+    } catch (e) {
+      console.error('POST /api/auth/google:', e.message);
+      return jsonRes(res, 500, { ok: false, error: 'Erro ao autenticar.' });
+    }
+  }
+
+  // ── POST /api/auth/user-logout ──
+  if (url === '/api/auth/user-logout' && method === 'POST') {
+    const auth  = req.headers['authorization'] || '';
+    const token = auth.replace(/^Bearer\s+/i, '').trim();
+    userSessions.delete(token);
+    return jsonRes(res, 200, { ok: true });
+  }
+
+  // ── GET /api/auth/me ──
+  if (url === '/api/auth/me' && method === 'GET') {
+    const auth  = req.headers['authorization'] || '';
+    const token = auth.replace(/^Bearer\s+/i, '').trim();
+    const user  = token ? userSessions.get(token) : null;
+    if (!user) return jsonRes(res, 401, { ok: false });
+    return jsonRes(res, 200, { ok: true, user });
   }
 
   // ── POST /api/ads  (submit new ad — public) ──
