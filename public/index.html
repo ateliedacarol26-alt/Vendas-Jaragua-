@@ -680,25 +680,61 @@
   </div>
   <div class="dash-inner">
     <div class="stats-grid" style="margin-bottom:28px">
-      <div class="stat-card"><div class="stat-label">Total de Anúncios</div><div class="stat-value">4.820</div><div class="stat-sub" style="color:var(--orange)">48 aguardando aprovação</div></div>
-      <div class="stat-card"><div class="stat-label">Usuários</div><div class="stat-value">1.290</div><div class="stat-sub">↑ 34 esta semana</div></div>
-      <div class="stat-card"><div class="stat-label">Faturamento / Mês</div><div class="stat-value" style="font-size:22px">R$4.230</div><div class="stat-sub" style="color:var(--green)">↑ 22% vs mês anterior</div></div>
-      <div class="stat-card"><div class="stat-label">Destaques Ativos</div><div class="stat-value">23</div><div class="stat-sub">R$227,70 em destaques</div></div>
+      <div class="stat-card">
+        <div class="stat-label">Total Recebidos</div>
+        <div class="stat-value" id="adminStatTotal">—</div>
+        <div class="stat-sub" id="adminStatPendingSub" style="color:var(--orange)">carregando...</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Pendentes</div>
+        <div class="stat-value" id="adminStatPending" style="color:var(--orange)">—</div>
+        <div class="stat-sub">aguardando moderação</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Aprovados</div>
+        <div class="stat-value" id="adminStatActive" style="color:var(--green)">—</div>
+        <div class="stat-sub" style="color:var(--green)">publicados no site</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Rejeitados</div>
+        <div class="stat-value" id="adminStatRejected" style="color:#ef4444">—</div>
+        <div class="stat-sub">não publicados</div>
+      </div>
     </div>
+
     <div style="background:white;border-radius:var(--radius);border:1px solid var(--gray-200);overflow:hidden">
-      <div style="padding:16px 20px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-        <div style="font-weight:700;color:var(--blue-dark)">Gerenciar Anúncios</div>
-        <div style="display:flex;gap:8px">
-          <span class="badge badge-pending">48 Pendentes</span>
-          <span class="badge badge-active">4.712 Ativos</span>
-          <span class="badge badge-rejected">60 Rejeitados</span>
+      <div style="padding:16px 20px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+        <div style="font-weight:700;color:var(--blue-dark);font-size:16px">Moderação de Anúncios</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap" id="adminFilterBar">
+          <button class="filter-chip active" onclick="adminSetFilter('all',this)">Todos</button>
+          <button class="filter-chip" onclick="adminSetFilter('pending',this)">⏳ Pendentes <span id="adminBadgePending" class="badge badge-pending" style="margin-left:4px">0</span></button>
+          <button class="filter-chip" onclick="adminSetFilter('active',this)">✅ Aprovados <span id="adminBadgeActive" class="badge badge-active" style="margin-left:4px">0</span></button>
+          <button class="filter-chip" onclick="adminSetFilter('rejected',this)">❌ Rejeitados <span id="adminBadgeRejected" class="badge badge-rejected" style="margin-left:4px">0</span></button>
+          <button class="btn btn-blue" style="padding:6px 14px;font-size:13px" onclick="loadAdminData()">🔄 Atualizar</button>
         </div>
       </div>
       <div style="overflow-x:auto">
         <table class="admin-table">
-          <thead><tr><th>ID</th><th>Título</th><th>Usuário</th><th>Categoria</th><th>Preço</th><th>Plano</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Título</th>
+              <th>Categoria</th>
+              <th>Cidade</th>
+              <th>Preço</th>
+              <th>WhatsApp</th>
+              <th>Status</th>
+              <th>Data</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
           <tbody id="adminTable"></tbody>
         </table>
+      </div>
+      <div id="adminEmptyState" style="display:none;padding:48px 20px;text-align:center;color:var(--gray-400)">
+        <div style="font-size:40px;margin-bottom:12px">📭</div>
+        <div style="font-size:15px;font-weight:600">Nenhum anúncio encontrado</div>
+        <div style="font-size:13px;margin-top:4px">Os anúncios enviados pelo formulário aparecerão aqui.</div>
       </div>
     </div>
   </div>
@@ -970,7 +1006,7 @@ function showPage(page) {
   document.getElementById('page-'+page).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
   if(page==='ads') renderAdsPage();
-  if(page==='admin') renderAdminTable();
+  if(page==='admin') loadAdminData();
   if(page==='dashboard') renderDashTable();
 }
 
@@ -1139,32 +1175,111 @@ function doSearch() {
 }
 
 // ============================================================
-// ADMIN TABLE
+// ADMIN — MODERATION SYSTEM
 // ============================================================
-function renderAdminTable() {
+let adminCurrentFilter = 'all';
+
+async function loadAdminData() {
+  await Promise.all([loadAdminStats(), loadAdminTable()]);
+}
+
+async function loadAdminStats() {
+  try {
+    const res = await fetch('/api/admin/stats');
+    const data = await res.json();
+    if (!data.ok) return;
+    document.getElementById('adminStatTotal').textContent = data.total;
+    document.getElementById('adminStatPending').textContent = data.pending;
+    document.getElementById('adminStatActive').textContent = data.active;
+    document.getElementById('adminStatRejected').textContent = data.rejected;
+    document.getElementById('adminStatPendingSub').textContent =
+      data.pending === 0 ? 'nenhum aguardando' : `${data.pending} aguardando aprovação`;
+    document.getElementById('adminBadgePending').textContent = data.pending;
+    document.getElementById('adminBadgeActive').textContent = data.active;
+    document.getElementById('adminBadgeRejected').textContent = data.rejected;
+  } catch (e) { /* silently ignore */ }
+}
+
+async function loadAdminTable() {
   const t = document.getElementById('adminTable');
-  if(!t) return;
-  const statuses = ['pending','active','active','rejected','active'];
-  const plans = ['free','bronze','silver','gold','free'];
-  t.innerHTML = SAMPLE_ADS.slice(0,10).map((ad,i)=>`
-    <tr>
-      <td>#${ad.id}</td>
-      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${ad.title}</td>
-      <td>Usuário ${i+1}</td>
-      <td>${ad.cat}</td>
-      <td>${ad.price===0?'Combinar':'R$'+ad.price.toLocaleString('pt-BR')}</td>
-      <td><span class="badge badge-${plans[i%5]}">${plans[i%5].charAt(0).toUpperCase()+plans[i%5].slice(1)}</span></td>
-      <td><span class="badge badge-${statuses[i%5]}">${statuses[i%5]==='pending'?'Pendente':statuses[i%5]==='active'?'Ativo':'Rejeitado'}</span></td>
-      <td>${ad.days===0?'Hoje':ad.days+'d atrás'}</td>
-      <td>
-        <div class="action-btns">
-          <button class="action-btn action-btn-approve" onclick="showNotif('Anúncio aprovado!','')">✓</button>
-          <button class="action-btn action-btn-reject" onclick="showNotif('Anúncio rejeitado.','error')">✗</button>
-          <button class="action-btn action-btn-delete" onclick="showNotif('Anúncio excluído.','error')">🗑</button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
+  const empty = document.getElementById('adminEmptyState');
+  if (!t) return;
+  t.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--gray-400)">Carregando...</td></tr>`;
+  try {
+    const qs = adminCurrentFilter !== 'all' ? `?status=${adminCurrentFilter}` : '';
+    const res = await fetch('/api/admin/ads' + qs);
+    const data = await res.json();
+    if (!data.ok) throw new Error();
+    const ads = data.ads;
+    if (ads.length === 0) {
+      t.innerHTML = '';
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+    t.innerHTML = ads.map(ad => {
+      const statusLabel = ad.status === 'pending' ? 'Pendente' : ad.status === 'active' ? 'Aprovado' : 'Rejeitado';
+      const statusClass = ad.status === 'pending' ? 'badge-pending' : ad.status === 'active' ? 'badge-active' : 'badge-rejected';
+      const price = ad.price === 0 ? 'Combinar' : 'R$ ' + Number(ad.price).toLocaleString('pt-BR');
+      const date = new Date(ad.createdAt).toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+      const canApprove = ad.status !== 'active';
+      const canReject  = ad.status !== 'rejected';
+      return `
+        <tr id="admin-row-${ad.id}">
+          <td style="font-weight:700;color:var(--gray-400)">#${ad.id}</td>
+          <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600">${ad.title}</td>
+          <td>${ad.category}</td>
+          <td>📍 ${ad.city}</td>
+          <td>${price}</td>
+          <td style="font-size:12px">${ad.whatsapp}</td>
+          <td><span class="badge ${statusClass}">${statusLabel}</span></td>
+          <td style="font-size:12px;white-space:nowrap">${date}</td>
+          <td>
+            <div class="action-btns">
+              ${canApprove ? `<button class="action-btn action-btn-approve" title="Aprovar" onclick="adminApprove(${ad.id})">✓ Aprovar</button>` : ''}
+              ${canReject  ? `<button class="action-btn action-btn-reject"  title="Rejeitar" onclick="adminReject(${ad.id})">✗ Rejeitar</button>` : ''}
+              <button class="action-btn action-btn-delete" title="Excluir" onclick="adminDelete(${ad.id})">🗑</button>
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+  } catch (e) {
+    t.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:24px;color:#ef4444">Erro ao carregar anúncios.</td></tr>`;
+  }
+}
+
+function adminSetFilter(filter, el) {
+  adminCurrentFilter = filter;
+  document.querySelectorAll('#adminFilterBar .filter-chip').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  loadAdminTable();
+}
+
+async function adminApprove(id) {
+  try {
+    const res = await fetch(`/api/admin/ads/${id}/approve`, { method: 'POST' });
+    const data = await res.json();
+    if (data.ok) { showNotif('✅ Anúncio aprovado e publicado!', ''); loadAdminData(); }
+    else showNotif(data.error || 'Erro ao aprovar.', 'error');
+  } catch (e) { showNotif('Erro de conexão.', 'error'); }
+}
+
+async function adminReject(id) {
+  try {
+    const res = await fetch(`/api/admin/ads/${id}/reject`, { method: 'POST' });
+    const data = await res.json();
+    if (data.ok) { showNotif('❌ Anúncio rejeitado.', 'error'); loadAdminData(); }
+    else showNotif(data.error || 'Erro ao rejeitar.', 'error');
+  } catch (e) { showNotif('Erro de conexão.', 'error'); }
+}
+
+async function adminDelete(id) {
+  try {
+    const res = await fetch(`/api/admin/ads/${id}`, { method: 'DELETE' });
+    const data = await res.json();
+    if (data.ok) { showNotif('🗑 Anúncio excluído.', 'error'); loadAdminData(); }
+    else showNotif(data.error || 'Erro ao excluir.', 'error');
+  } catch (e) { showNotif('Erro de conexão.', 'error'); }
 }
 
 function renderDashTable() {
