@@ -1028,7 +1028,7 @@
 
 <!-- ==================== MODAL: AD DETAIL ==================== -->
 <div class="modal-overlay" id="adDetailModal">
-  <div class="modal" style="max-width:560px">
+  <div class="modal" style="max-width:600px">
     <button class="modal-close" onclick="closeModal('adDetailModal')">×</button>
     <div id="adDetailContent"></div>
   </div>
@@ -1228,6 +1228,20 @@ function openAdDetail(id) {
     <div style="border-top:1px solid var(--gray-200);padding-top:16px;margin-bottom:20px">
       <div style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--blue-dark)">Descrição</div>
       <div style="font-size:14px;color:var(--gray-600);line-height:1.7">${ad.desc}</div>
+    </div>
+    <div style="border-top:1px solid var(--gray-200);padding-top:16px;margin-bottom:20px">
+      <div style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--blue-dark)">📍 Localização — ${ad.city}, SC</div>
+      <div style="border-radius:10px;overflow:hidden;border:1px solid var(--gray-200)">
+        <iframe
+          src="https://maps.google.com/maps?q=${encodeURIComponent(ad.city + ', SC, Brasil')}&output=embed&z=13&hl=pt-BR"
+          width="100%" height="200" frameborder="0" style="border:0;display:block"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      <a href="https://maps.google.com/maps?q=${encodeURIComponent(ad.city + ', SC, Brasil')}" target="_blank"
+         style="font-size:12px;color:var(--blue-light);font-weight:600;display:inline-block;margin-top:6px;text-decoration:none">
+        🔗 Abrir no Google Maps →
+      </a>
     </div>
     <button class="ad-whatsapp" style="font-size:15px;padding:14px" onclick="openWhatsApp('${ad.wpp}','${ad.title}')">
       💬 Chamar no WhatsApp
@@ -1487,6 +1501,20 @@ async function viewAdDetail(id) {
             <div style="font-size:11px;color:var(--gray-500);font-weight:600;text-transform:uppercase;margin-bottom:6px">Descrição</div>
             <div style="background:var(--gray-50,#f9fafb);border:1px solid var(--gray-200);border-radius:8px;padding:12px 14px;line-height:1.6;font-size:14px;color:var(--gray-700)">${ad.description}</div>
           </div>` : ''}
+          <div style="margin-bottom:14px">
+            <div style="font-size:11px;color:var(--gray-500);font-weight:600;text-transform:uppercase;margin-bottom:6px">📍 Localização — ${ad.city}, SC</div>
+            <div style="border-radius:8px;overflow:hidden;border:1px solid var(--gray-200)">
+              <iframe
+                src="https://maps.google.com/maps?q=${encodeURIComponent(ad.city + ', SC, Brasil')}&output=embed&z=13&hl=pt-BR"
+                width="100%" height="180" frameborder="0" style="border:0;display:block"
+                allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
+            </div>
+            <a href="https://maps.google.com/maps?q=${encodeURIComponent(ad.city + ', SC, Brasil')}" target="_blank"
+               style="font-size:12px;color:var(--blue-light);font-weight:600;display:inline-block;margin-top:5px;text-decoration:none">
+              🔗 Abrir no Google Maps →
+            </a>
+          </div>
           <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;font-size:13px;color:#166534">
             💬 <strong>Contato via WhatsApp:</strong>
             <a href="https://wa.me/55${ad.whatsapp.replace(/\D/g,'')}" target="_blank" style="color:#166534;font-weight:700;margin-left:4px">
