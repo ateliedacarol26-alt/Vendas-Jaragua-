@@ -830,8 +830,10 @@
       <div class="form-group">
         <label class="form-label">Cidade *</label>
         <select class="form-control" id="adCity">
-          <option>Jaraguá do Sul</option><option>Schroeder</option><option>Corupá</option>
-          <option>São Bento do Sul</option><option>Joinville</option><option>Blumenau</option>
+          <option value="">Selecione a cidade...</option>
+          <option>Jaraguá do Sul</option>
+          <option>Guaramirim</option>
+          <option>Schroeder</option>
         </select>
       </div>
     </div>
@@ -1215,12 +1217,41 @@ function doRegister() {
   showNotif('Conta criada com sucesso! Agora publique seu primeiro anúncio 🎉','');
 }
 
-function publishAd() {
-  const title = document.getElementById('adTitle').value;
+const ALLOWED_CITIES = ['Jaraguá do Sul', 'Guaramirim', 'Schroeder'];
+
+async function publishAd() {
+  const title = document.getElementById('adTitle').value.trim();
   const cat = document.getElementById('adCat').value;
-  if(!title || !cat) { showNotif('Preencha pelo menos Título e Categoria!','error'); return; }
-  closeModal('adModal');
-  showNotif('Anúncio enviado para aprovação! Em breve estará no ar 🚀','');
+  const city = document.getElementById('adCity').value;
+  const desc = document.getElementById('adDesc').value.trim();
+  const price = document.getElementById('adPrice').value;
+  const wpp = document.getElementById('adWpp').value.trim();
+
+  if (!title || !cat) { showNotif('Preencha pelo menos Título e Categoria!', 'error'); return; }
+  if (!city) { showNotif('Selecione a cidade do anúncio.', 'error'); return; }
+  if (!wpp) { showNotif('Informe o WhatsApp para contato.', 'error'); return; }
+
+  if (!ALLOWED_CITIES.includes(city)) {
+    showNotif('Desculpe, no momento aceitamos anúncios apenas para Jaraguá do Sul, Guaramirim e Schroeder.', 'error');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/ads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, category: cat, city, description: desc, price, whatsapp: wpp })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      closeModal('adModal');
+      showNotif('Anúncio enviado para aprovação! Em breve estará no ar 🚀', '');
+    } else {
+      showNotif(data.error || 'Erro ao publicar anúncio.', 'error');
+    }
+  } catch (e) {
+    showNotif('Erro de conexão. Tente novamente.', 'error');
+  }
 }
 
 function generateAI() {
