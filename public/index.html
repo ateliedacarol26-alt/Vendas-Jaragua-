@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Classificados Jaraguá do Sul - Compre, Venda e Divulgue em Jaraguá do Sul. Anúncios de veículos, imóveis, eletrônicos, empregos e muito mais.">
+<meta name="keywords" content="classificados jaraguá do sul, comprar jaraguá do sul, vender jaraguá do sul, empregos jaraguá do sul, veículos jaraguá do sul">
+<title>Classificados Jaraguá - Compre, Venda e Divulgue em Jaraguá do Sul</title>
+<style>
+  :root {
+    --blue-dark: #0D2B4E;
+    --blue-mid: #1A4480;
+    --blue-light: #2563AB;
+    --blue-pale: #EBF2FB;
+    --orange: #F97316;
+    --orange-dark: #C2580A;
+    --orange-light: #FEF3E9;
+    --white: #FFFFFF;
+    --gray-50: #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-400: #9CA3AF;
+    --gray-600: #4B5563;
+    --gray-800: #1F2937;
+    --green: #16A34A;
+    --green-light: #DCFCE7;
+    --radius: 10px;
+    --radius-lg: 16px;
+    --shadow: 0 2px 12px rgba(13,43,78,0.10);
+    --shadow-md: 0 4px 24px rgba(13,43,78,0.13);
+  }
+  html { scroll-behavior: smooth; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--gray-100); color: var(--gray-800); }
+  a { text-decoration: none; color: inherit; }
+  img { max-width: 100%; border-radius: var(--radius); }
+
+  /* ===================== TOPBAR ===================== */
+  .topbar { background: var(--blue-dark); color: #a8c4e0; font-size: 12px; padding: 6px 0; }
+  .topbar .inner { max-width: 1200px; margin: auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+  .topbar a { color: #a8c4e0; margin-left: 16px; font-size: 12px; }
+  .topbar a:hover { color: white; }
+
+  /* ===================== HEADER ===================== */
+  header { background: var(--blue-mid); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.25); }
+  .header-inner { max-width: 1200px; margin: auto; padding: 0 20px; display: flex; align-items: center; gap: 20px; height: 68px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 22px; color: white; white-space: nowrap; }
+  .logo-icon { background: var(--orange); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .logo span { color: var(--orange); }
+  .search-bar { flex: 1; display: flex; background: white; border-radius: 8px; overflow: hidden; max-width: 560px; }
+  .search-bar input { flex: 1; border: none; padding: 0 16px; font-size: 15px; outline: none; color: var(--gray-800); min-width: 0; }
+  .search-bar select { border: none; border-left: 1px solid var(--gray-200); padding: 0 10px; font-size: 13px; outline: none; color: var(--gray-600); background: var(--gray-50); }
+  .search-bar button { background: var(--orange); color: white; border: none; padding: 0 20px; font-size: 15px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .search-bar button:hover { background: var(--orange-dark); }
+  .header-actions { display: flex; gap: 10px; align-items: center; margin-left: auto; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; }
+  .btn-outline { background: transparent; color: white; border: 1.5px solid rgba(255,255,255,0.4); }
+  .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: white; }
+  .btn-orange { background: var(--orange); color: white; }
+  .btn-orange:hover { background: var(--orange-dark); }
+  .btn-blue { background: var(--blue-light); color: white; }
+  .btn-blue:hover { background: var(--blue-dark); }
+  .btn-green { background: var(--green); color: white; }
+  .btn-green:hover { background: #15803d; }
+  .btn-white { background: white; color: var(--blue-dark); }
+  .btn-white:hover { background: var(--gray-100); }
+
+  /* ===================== HERO ===================== */
+  .hero { background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-mid) 60%, #1e5fa0 100%); color: white; padding: 56px 20px 44px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -80px; width: 400px; height: 400px; border-radius: 50%; background: rgba(249,115,22,0.08); }
+  .hero::after { content: ''; position: absolute; bottom: -80px; left: -60px; width: 300px; height: 300px; border-radius: 50%; background: rgba(255,255,255,0.04); }
+  .hero-inner { max-width: 700px; margin: auto; position: relative; z-index: 1; }
+  .hero-badge { display: inline-block; background: var(--orange); color: white; border-radius: 20px; padding: 5px 16px; font-size: 13px; font-weight: 700; margin-bottom: 20px; letter-spacing: 0.5px; }
+  .hero h1 { font-size: 42px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+  .hero h1 span { color: var(--orange); }
+  .hero p { font-size: 18px; color: rgba(255,255,255,0.8); margin-bottom: 36px; }
+  .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  /* ===================== SEARCH HERO ===================== */
+  .search-hero { background: white; max-width: 800px; margin: -28px auto 0; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 20px 24px; position: relative; z-index: 10; }
+  .search-hero h3 { font-size: 14px; color: var(--gray-600); margin-bottom: 12px; font-weight: 600; }
+  .search-hero-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .search-hero input, .search-hero select { flex: 1; min-width: 140px; border: 1.5px solid var(--gray-200); border-radius: 8px; padding: 10px 14px; font-size: 14px; outline: none; color: var(--gray-800); transition: border .15s; }
+  .search-hero input:focus, .search-hero select:focus { border-color: var(--blue-light); }
+  .search-hero button { background: var(--blue-mid); color: white; border: none; border-radius: 8px; padding: 10px 24px; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+  .search-hero button:hover { background: var(--blue-dark); }
+
+  /* ===================== SECTION ===================== */
+  .section { max-width: 1200px; margin: 0 auto; padding: 48px 20px; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+  .section-title { font-size: 22px; font-weight: 800; color: var(--blue-dark); display: flex; align-items: center; gap: 10px; }
+  .section-title::before { content: ''; display: inline-block; width: 4px; height: 24px; background: var(--orange); border-radius: 3px; }
+  .section-link { color: var(--blue-light); font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+  .section-link:hover { color: var(--orange); }
+
+  /* ===================== CATEGORIES ===================== */
+  .cats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 12px; }
+  .cat-card { background: white; border-radius: var(--radius); padding: 18px 10px 14px; text-align: center; cursor: pointer; border: 1.5px solid var(--gray-200); transition: all .18s; }
+  .cat-card:hover { border-color: var(--blue-light); background: var(--blue-pale); transform: translateY(-2px); box-shadow: var(--shadow); }
+  .cat-card:hover .cat-icon { background: var(--blue-mid); }
+  .cat-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--blue-pale); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; transition: background .18s; }
+  .cat-name { font-size: 12px; font-weight: 700; color: var(--gray-800); }
+  .cat-count { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+
+  /* ===================== CAROUSEL ===================== */
+  .carousel-wrap { position: relative; overflow: hidden; }
+  .carousel-track { display: flex; gap: 16px; transition: transform .4s cubic-bezier(.4,0,.2,1); padding-bottom: 4px; }
+  .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; font-size: 18px; z-index: 5; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md); transition: all .15s; }
+  .carousel-prev { left: -16px; background: white; color: var(--blue-dark); }
+  .carousel-next { right: -16px; background: var(--orange); color: white; }
+  .carousel-btn:hover { transform: translateY(-50%) scale(1.08); }
+
+  /* ===================== AD CARD ===================== */
+  .ad-card { background: white; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--gray-200); box-shadow: var(--shadow); transition: all .18s; cursor: pointer; min-width: 220px; flex: 0 0 220px; position: relative; }
+  .ad-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--blue-light); }
+  .ad-card-img { width: 100%; height: 148px; object-fit: cover; border-radius: 0; display: block; background: var(--gray-100); }
+  .ad-card-img-placeholder { width: 100%; height: 148px; background: linear-gradient(135deg, var(--blue-pale) 0%, #dbeafe 100%); display: flex; align-items: center; justify-content: center; font-size: 36px; }
+  .ad-card-body { padding: 12px 14px 14px; }
+  .ad-badge { position: absolute; top: 10px; left: 10px; background: var(--orange); color: white; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; letter-spacing: 0.4px; }
+  .ad-badge-verified { position: absolute; top: 10px; right: 10px; background: var(--green); color: white; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
+  .ad-title { font-size: 14px; font-weight: 700; color: var(--gray-800); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ad-price { font-size: 18px; font-weight: 800; color: var(--blue-dark); margin-bottom: 6px; }
+  .ad-price.free { color: var(--green); font-size: 16px; }
+  .ad-meta { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gray-400); margin-bottom: 10px; }
+  .ad-meta span { display: flex; align-items: center; gap: 3px; }
+  .ad-whatsapp { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; background: #25D366; color: white; border: none; border-radius: 8px; padding: 9px 0; font-size: 13px; font-weight: 700; cursor: pointer; transition: background .15s; }
+  .ad-whatsapp:hover { background: #1da851; }
+
+  /* ===================== GRID ADS ===================== */
+  .ads-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
+  .ads-grid .ad-card { min-width: unset; flex: unset; }
+
+  /* ===================== FILTERS ===================== */
+  .filters-bar { background: white; border-radius: var(--radius); border: 1px solid var(--gray-200); padding: 14px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 20px; }
+  .filter-chip { display: inline-flex; align-items: center; gap: 5px; padding: 6px 14px; border: 1.5px solid var(--gray-200); border-radius: 20px; font-size: 13px; cursor: pointer; transition: all .15s; color: var(--gray-600); background: white; }
+  .filter-chip:hover, .filter-chip.active { border-color: var(--blue-mid); background: var(--blue-pale); color: var(--blue-mid); }
+
+  /* ===================== PLANS ===================== */
+  .plans-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
+  .plan-card { background: white; border-radius: var(--radius-lg); border: 2px solid var(--gray-200); padding: 28px 24px; position: relative; transition: all .2s; }
+  .plan-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+  .plan-card.featured { border-color: var(--orange); }
+  .plan-badge-featured { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--orange); color: white; font-size: 11px; font-weight: 800; padding: 4px 14px; border-radius: 20px; white-space: nowrap; }
+  .plan-name { font-size: 15px; font-weight: 800; color: var(--blue-dark); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .plan-price { font-size: 32px; font-weight: 900; color: var(--blue-dark); margin-bottom: 4px; }
+  .plan-price small { font-size: 14px; font-weight: 400; color: var(--gray-400); }
+  .plan-price.free-price { font-size: 24px; color: var(--green); }
+  .plan-desc { font-size: 13px; color: var(--gray-400); margin-bottom: 20px; }
+  .plan-features { list-style: none; margin-bottom: 24px; }
+  .plan-features li { font-size: 13px; padding: 6px 0; border-bottom: 1px solid var(--gray-100); display: flex; align-items: center; gap: 8px; color: var(--gray-600); }
+  .plan-features li::before { content: '✓'; color: var(--green); font-weight: 800; font-size: 14px; flex-shrink: 0; }
+  .plan-btn { width: 100%; padding: 12px; border-radius: 8px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; transition: all .15s; }
+  .plan-btn-free { background: var(--gray-100); color: var(--gray-800); }
+  .plan-btn-free:hover { background: var(--gray-200); }
+  .plan-btn-paid { background: var(--orange); color: white; }
+  .plan-btn-paid:hover { background: var(--orange-dark); }
+  .plan-btn-gold { background: linear-gradient(135deg, #d4af37 0%, #f5d066 50%, #d4af37 100%); color: #3d2b00; }
+  .plan-btn-gold:hover { opacity: 0.9; }
+
+  /* ===================== DESTAQUE AVULSO ===================== */
+  .spotlight-box { background: linear-gradient(135deg, var(--orange) 0%, #fb923c 100%); border-radius: var(--radius-lg); padding: 32px 36px; color: white; display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+  .spotlight-info { flex: 1; min-width: 220px; }
+  .spotlight-info h3 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+  .spotlight-info p { font-size: 15px; opacity: 0.9; margin-bottom: 0; }
+  .spotlight-price { font-size: 42px; font-weight: 900; text-align: center; }
+  .spotlight-price small { display: block; font-size: 14px; font-weight: 400; opacity: 0.85; }
+  .spotlight-features { flex: 1; min-width: 200px; }
+  .spotlight-features li { list-style: none; padding: 5px 0; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+  .spotlight-features li::before { content: '⚡'; font-size: 14px; }
+  .spotlight-btn { background: white; color: var(--orange-dark); border: none; border-radius: 10px; padding: 14px 28px; font-size: 16px; font-weight: 800; cursor: pointer; white-space: nowrap; transition: all .15s; box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+  .spotlight-btn:hover { transform: scale(1.03); }
+
+  /* ===================== MODALS ===================== */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: white; border-radius: var(--radius-lg); padding: 36px; width: 100%; max-width: 500px; margin: 16px; position: relative; max-height: 90vh; overflow-y: auto; }
+  .modal-title { font-size: 22px; font-weight: 800; color: var(--blue-dark); margin-bottom: 24px; }
+  .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--gray-400); line-height: 1; }
+  .modal-close:hover { color: var(--gray-800); }
+  .form-group { margin-bottom: 16px; }
+  .form-label { font-size: 13px; font-weight: 700; color: var(--gray-600); margin-bottom: 6px; display: block; }
+  .form-control { width: 100%; border: 1.5px solid var(--gray-200); border-radius: 8px; padding: 10px 14px; font-size: 14px; outline: none; transition: border .15s; font-family: inherit; }
+  .form-control:focus { border-color: var(--blue-light); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .tab-row { display: flex; gap: 0; border-bottom: 2px solid var(--gray-200); margin-bottom: 24px; }
+  .tab-btn { flex: 1; padding: 10px; background: none; border: none; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--gray-400); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all .15s; }
+  .tab-btn.active { color: var(--blue-mid); border-bottom-color: var(--blue-mid); }
+  .social-btn { width: 100%; padding: 11px; border-radius: 8px; border: 1.5px solid var(--gray-200); font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; background: white; transition: all .15s; }
+  .social-btn:hover { background: var(--gray-50); }
+  .divider { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--gray-400); margin: 16px 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--gray-200); }
+  .upload-area { border: 2px dashed var(--gray-200); border-radius: var(--radius); padding: 28px; text-align: center; cursor: pointer; transition: all .15s; }
+  .upload-area:hover { border-color: var(--blue-light); background: var(--blue-pale); }
+  .upload-icon { font-size: 36px; margin-bottom: 8px; }
+  .ai-btn { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; border: none; border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-top: 10px; }
+  .ai-btn:hover { opacity: 0.9; }
+
+  /* ===================== DASHBOARD ===================== */
+  .dashboard { display: none; }
+  .dash-header { background: var(--blue-dark); color: white; padding: 24px 0; }
+  .dash-header .inner { max-width: 1200px; margin: auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+  .dash-nav { display: flex; gap: 0; background: white; border-bottom: 2px solid var(--gray-200); }
+  .dash-nav a { padding: 14px 24px; font-size: 14px; font-weight: 600; color: var(--gray-600); border-bottom: 3px solid transparent; margin-bottom: -2px; cursor: pointer; transition: all .15s; }
+  .dash-nav a:hover, .dash-nav a.active { color: var(--blue-mid); border-bottom-color: var(--blue-mid); }
+  .dash-inner { max-width: 1200px; margin: 0 auto; padding: 28px 20px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+  .stat-card { background: white; border-radius: var(--radius); padding: 20px; border: 1px solid var(--gray-200); }
+  .stat-label { font-size: 12px; color: var(--gray-400); font-weight: 600; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-value { font-size: 28px; font-weight: 800; color: var(--blue-dark); }
+  .stat-sub { font-size: 12px; color: var(--green); margin-top: 4px; }
+
+  /* ===================== ADMIN ===================== */
+  .admin-table { width: 100%; border-collapse: collapse; background: white; border-radius: var(--radius); overflow: hidden; }
+  .admin-table th { background: var(--blue-dark); color: white; padding: 12px 16px; font-size: 13px; text-align: left; }
+  .admin-table td { padding: 12px 16px; border-bottom: 1px solid var(--gray-100); font-size: 13px; }
+  .admin-table tr:last-child td { border-bottom: none; }
+  .admin-table tr:hover td { background: var(--gray-50); }
+  .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+  .badge-pending { background: #fef3c7; color: #92400e; }
+  .badge-active { background: var(--green-light); color: #166534; }
+  .badge-rejected { background: #fee2e2; color: #991b1b; }
+  .badge-gold { background: #fef3c7; color: #78350f; }
+  .badge-silver { background: #f1f5f9; color: #334155; }
+  .badge-bronze { background: #fff7ed; color: #9a3412; }
+  .badge-free { background: var(--gray-100); color: var(--gray-600); }
+  .action-btns { display: flex; gap: 6px; }
+  .action-btn { padding: 5px 10px; border-radius: 6px; border: none; font-size: 11px; font-weight: 700; cursor: pointer; }
+  .action-btn-approve { background: var(--green-light); color: #166534; }
+  .action-btn-reject { background: #fee2e2; color: #991b1b; }
+  .action-btn-delete { background: var(--gray-100); color: var(--gray-600); }
+  .action-btn-ban { background: #1f2937; color: white; }
+
+  /* ===================== NAV TABS PAGES ===================== */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ===================== FOOTER ===================== */
+  footer { background: var(--blue-dark); color: rgba(255,255,255,0.7); margin-top: 60px; }
+  .footer-main { max-width: 1200px; margin: auto; padding: 48px 20px 32px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
+  .footer-logo { font-size: 20px; font-weight: 800; color: white; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .footer-desc { font-size: 13px; line-height: 1.7; margin-bottom: 16px; }
+  .footer-social { display: flex; gap: 10px; }
+  .social-link { width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; transition: background .15s; }
+  .social-link:hover { background: var(--orange); }
+  .footer-col h4 { font-size: 13px; font-weight: 800; color: white; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { padding: 5px 0; font-size: 13px; cursor: pointer; }
+  .footer-col li:hover { color: white; }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); max-width: 1200px; margin: 0 auto; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; flex-wrap: wrap; gap: 10px; }
+  .pix-badge { background: #00bca4; color: white; border-radius: 6px; padding: 3px 8px; font-size: 11px; font-weight: 700; }
+  .mp-badge { background: #009ee3; color: white; border-radius: 6px; padding: 3px 8px; font-size: 11px; font-weight: 700; }
+
+  /* ===================== NOTIFICATION ===================== */
+  .notification { position: fixed; top: 80px; right: 20px; background: white; border-left: 4px solid var(--green); border-radius: var(--radius); padding: 14px 20px; box-shadow: var(--shadow-md); z-index: 2000; font-size: 14px; font-weight: 600; color: var(--gray-800); transform: translateX(120%); transition: transform .3s; max-width: 300px; }
+  .notification.show { transform: translateX(0); }
+  .notification.error { border-left-color: #ef4444; }
+  .notification.info { border-left-color: var(--blue-mid); }
+
+  /* ===================== HERO BANNER SLIDER ===================== */
+  .hbs-outer { width: 100%; background: #0a1f38; overflow: hidden; position: relative; }
+  .hbs-track-wrap { overflow: hidden; width: 100%; }
+  .hbs-track { display: flex; transition: transform .55s cubic-bezier(.4,0,.2,1); will-change: transform; }
+  .hbs-slide { flex: 0 0 100%; width: 100%; height: 420px; position: relative; display: flex; align-items: stretch; cursor: pointer; }
+  .hbs-slide-bg { position: absolute; inset: 0; background-size: cover; background-position: center; }
+  .hbs-slide-bg::after { content:''; position:absolute; inset:0; background: linear-gradient(90deg, rgba(5,20,45,0.88) 0%, rgba(5,20,45,0.65) 45%, rgba(5,20,45,0.25) 75%, rgba(5,20,45,0.10) 100%); }
+  .hbs-slide-emoji { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 140px; opacity: 0.18; pointer-events: none; }
+  .hbs-content { position: relative; z-index: 2; display: flex; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 80px; width: 100%; gap: 40px; }
+  .hbs-text { flex: 1; max-width: 580px; }
+  .hbs-sponsored { display: inline-flex; align-items: center; gap: 5px; background: var(--orange); color: white; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.6px; margin-bottom: 14px; }
+  .hbs-category { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+  .hbs-title { font-size: 34px; font-weight: 900; color: white; line-height: 1.15; margin-bottom: 12px; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .hbs-city { font-size: 14px; color: rgba(255,255,255,0.65); margin-bottom: 20px; display: flex; align-items: center; gap: 5px; }
+  .hbs-price { font-size: 40px; font-weight: 900; color: white; margin-bottom: 24px; line-height: 1; }
+  .hbs-price small { font-size: 16px; font-weight: 400; color: rgba(255,255,255,0.6); }
+  .hbs-price.free { color: #4ade80; font-size: 28px; }
+  .hbs-wpp { display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: white; border: none; border-radius: 10px; padding: 14px 28px; font-size: 16px; font-weight: 800; cursor: pointer; transition: all .18s; box-shadow: 0 4px 20px rgba(37,211,102,0.35); }
+  .hbs-wpp:hover { background: #1da851; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,211,102,0.45); }
+  .hbs-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; width: 48px; height: 48px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.12); backdrop-filter: blur(4px); color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+  .hbs-arrow:hover { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.7); transform: translateY(-50%) scale(1.08); }
+  .hbs-arrow-left { left: 20px; }
+  .hbs-arrow-right { right: 20px; }
+  .hbs-dots { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); display: flex; gap: 7px; z-index: 10; }
+  .hbs-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.35); border: none; cursor: pointer; transition: all .3s; padding: 0; }
+  .hbs-dot.active { background: var(--orange); width: 24px; border-radius: 4px; }
+  .hbs-counter { position: absolute; top: 18px; right: 20px; z-index: 10; background: rgba(0,0,0,0.4); color: rgba(255,255,255,0.8); font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
+  .hbs-progress { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--orange); transition: width 0s linear; z-index: 10; }
+  .hbs-label { display: inline-block; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+  @media (max-width: 768px) {
+    .hbs-slide { height: 300px; }
+    .hbs-content { padding: 0 20px; }
+    .hbs-title { font-size: 22px; }
+    .hbs-price { font-size: 28px; }
+    .hbs-wpp { font-size: 14px; padding: 11px 20px; }
+    .hbs-arrow { width: 36px; height: 36px; font-size: 15px; }
+    .hbs-arrow-left { left: 10px; }
+    .hbs-arrow-right { right: 10px; }
+  }
+
+  /* ===================== RESPONSIVE ===================== */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 28px; }
+    .header-inner { gap: 10px; height: 60px; }
+    .search-bar { display: none; }
+    .footer-main { grid-template-columns: 1fr; gap: 24px; }
+    .topbar .inner { flex-direction: column; gap: 4px; text-align: center; }
+    .logo { font-size: 18px; }
+    .cats-grid { grid-template-columns: repeat(4, 1fr); }
+    .plans-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .spotlight-box { flex-direction: column; text-align: center; }
+    .footer-col { display: none; }
+    .footer-col:first-child { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NOTIFICATION -->
+<div class="notification" id="notification"></div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="inner">
+    <span>📍 Jaraguá do Sul, SC — Portal de Classificados #1 da Região</span>
+    <div>
+      <a onclick="showModal('loginModal')">Entrar</a>
+      <a onclick="showModal('registerModal')">Cadastrar</a>
+      <a onclick="showPage('admin')">Admin</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo" onclick="showPage('home')" style="cursor:pointer">
+      <div class="logo-icon">🏷️</div>
+      Classificados <span>Jaraguá</span>
+    </div>
+    <div class="search-bar">
+      <input type="text" placeholder="O que você procura?" id="globalSearch">
+      <select id="globalCat">
+        <option value="">Categoria</option>
+        <option>Veículos</option><option>Imóveis</option><option>Eletrônicos</option>
+        <option>Empregos</option><option>Pets</option><option>Alimentação</option>
+        <option>Serviços</option><option>Moda</option><option>Games</option>
+        <option>Educação</option><option>Esportes</option><option>Outros</option>
+      </select>
+      <button onclick="doSearch()">🔍 Buscar</button>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="showModal('loginModal')">Entrar</button>
+      <button class="btn btn-orange" onclick="showModal('adModal')">+ Anunciar</button>
+    </div>
+  </div>
+</header>
+
+<!-- ==================== PAGE: HOME ==================== -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">🏙️ Jaraguá do Sul, SC</div>
+      <h1>Compre, Venda e Divulgue em <span>Jaraguá do Sul</span></h1>
+      <p>O maior portal de classificados da região. Milhares de anúncios esperando por você.</p>
+      <div class="hero-btns">
+        <button class="btn btn-orange" style="padding:14px 32px;font-size:16px" onclick="showModal('adModal')">📢 Anunciar Agora</button>
+        <button class="btn btn-white" style="padding:14px 32px;font-size:16px" onclick="document.getElementById('carrossel-destaques').scrollIntoView({behavior:'smooth'})">🔎 Ver Anúncios</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SEARCH HERO -->
+  <div style="max-width:1200px;margin:auto;padding:0 20px">
+    <div class="search-hero">
+      <h3>🔍 Pesquisa Avançada</h3>
+      <div class="search-hero-row">
+        <input type="text" placeholder="Ex: iPhone 14, Celta 2012..." id="sh-name">
+        <select id="sh-cat">
+          <option value="">Todas as Categorias</option>
+          <option>Veículos</option><option>Imóveis</option><option>Eletrônicos</option>
+          <option>Empregos</option><option>Pets</option><option>Alimentação</option>
+          <option>Serviços</option><option>Moda</option><option>Games</option>
+          <option>Educação</option><option>Esportes</option><option>Outros</option>
+        </select>
+        <select id="sh-city">
+          <option value="">Todas as Cidades</option>
+          <option>Jaraguá do Sul</option><option>Schroeder</option><option>Corupá</option>
+          <option>São Bento do Sul</option><option>Joinville</option><option>Blumenau</option>
+        </select>
+        <button onclick="doSearch()">Pesquisar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HERO BANNER SLIDER ===== -->
+  <div class="hbs-outer" id="heroBannerSlider">
+    <div class="hbs-track-wrap">
+      <div class="hbs-track" id="hbsTrack"></div>
+    </div>
+    <button class="hbs-arrow hbs-arrow-left" id="hbsPrev" aria-label="Slide anterior">&#8592;</button>
+    <button class="hbs-arrow hbs-arrow-right" id="hbsNext" aria-label="Próximo slide">&#8594;</button>
+    <div class="hbs-dots" id="hbsDots"></div>
+    <div class="hbs-counter" id="hbsCounter">1 / 1</div>
+    <div class="hbs-progress" id="hbsProgress"></div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Categorias</div>
+      <a class="section-link">Ver todas →</a>
+    </div>
+    <div class="cats-grid" id="categoriesGrid"></div>
+  </div>
+
+  <!-- DESTAQUES CAROUSEL -->
+  <div id="carrossel-destaques" style="background:var(--blue-pale);padding:8px 0; scroll-margin-top:80px">
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">⭐ Anúncios em Destaque</div>
+        <a class="section-link" onclick="showPage('ads')">Ver todos →</a>
+      </div>
+      <div class="carousel-wrap" id="carouselWrap">
+        <button class="carousel-btn carousel-prev" onclick="carousel(-1)">◀</button>
+        <div class="carousel-track" id="carouselTrack"></div>
+        <button class="carousel-btn carousel-next" onclick="carousel(1)">▶</button>
+      </div>
+      <!-- Dots -->
+      <div style="display:flex;justify-content:center;gap:6px;margin-top:16px" id="carouselDots"></div>
+    </div>
+  </div>
+
+  <!-- RECENT ADS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Anúncios Recentes</div>
+      <a class="section-link" onclick="showPage('ads')">Ver todos →</a>
+    </div>
+    <div class="filters-bar">
+      <span style="font-size:13px;font-weight:700;color:var(--gray-600)">Filtrar:</span>
+      <span class="filter-chip active" onclick="filterAds('all',this)">Todos</span>
+      <span class="filter-chip" onclick="filterAds('Veículos',this)">🚗 Veículos</span>
+      <span class="filter-chip" onclick="filterAds('Imóveis',this)">🏠 Imóveis</span>
+      <span class="filter-chip" onclick="filterAds('Eletrônicos',this)">📱 Eletrônicos</span>
+      <span class="filter-chip" onclick="filterAds('Empregos',this)">💼 Empregos</span>
+      <span class="filter-chip" onclick="filterAds('Pets',this)">🐶 Pets</span>
+      <span class="filter-chip" onclick="filterAds('Serviços',this)">🛠 Serviços</span>
+      <select onchange="sortAds(this.value)" style="margin-left:auto;border:1.5px solid var(--gray-200);border-radius:8px;padding:6px 12px;font-size:13px;outline:none">
+        <option value="recent">Mais Recentes</option>
+        <option value="price-asc">Menor Preço</option>
+        <option value="price-desc">Maior Preço</option>
+        <option value="featured">Destaques</option>
+      </select>
+    </div>
+    <div class="ads-grid" id="adsGrid"></div>
+    <div style="text-align:center;margin-top:28px">
+      <button class="btn btn-blue" style="padding:12px 40px" onclick="showPage('ads')">Ver Mais Anúncios</button>
+    </div>
+  </div>
+
+  <!-- PLANS -->
+  <div style="background:var(--gray-50);padding:8px 0">
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">Planos e Preços</div>
+        <span style="font-size:13px;color:var(--gray-400)">Cancele quando quiser · Sem fidelidade</span>
+      </div>
+      <div class="plans-grid">
+        <!-- FREE -->
+        <div class="plan-card">
+          <div class="plan-name">🆓 Gratuito</div>
+          <div class="plan-price free-price">R$ 0<small>/sempre</small></div>
+          <div class="plan-desc">Para quem está começando</div>
+          <ul class="plan-features">
+            <li>3 anúncios ativos</li>
+            <li>Duração de 7 dias</li>
+            <li>Sem destaque</li>
+            <li>WhatsApp incluso</li>
+          </ul>
+          <button class="plan-btn plan-btn-free" onclick="showModal('registerModal')">Começar Grátis</button>
+        </div>
+        <!-- BRONZE -->
+        <div class="plan-card">
+          <div class="plan-name">🥉 Bronze</div>
+          <div class="plan-price">R$ 9,90<small>/mês</small></div>
+          <div class="plan-desc">Para quem vende com frequência</div>
+          <ul class="plan-features">
+            <li>Até 10 anúncios ativos</li>
+            <li>Renovação automática</li>
+            <li>WhatsApp incluso</li>
+            <li>Estatísticas básicas</li>
+          </ul>
+          <button class="plan-btn plan-btn-paid" onclick="showModal('payModal')">Assinar Bronze</button>
+        </div>
+        <!-- PRATA -->
+        <div class="plan-card featured">
+          <div class="plan-badge-featured">🔥 MAIS POPULAR</div>
+          <div class="plan-name">🥈 Prata</div>
+          <div class="plan-price">R$ 19,90<small>/mês</small></div>
+          <div class="plan-desc">Para vendedores profissionais</div>
+          <ul class="plan-features">
+            <li>Até 20 anúncios ativos</li>
+            <li>Estatísticas completas</li>
+            <li>Destaque básico</li>
+            <li>Prioridade nas buscas</li>
+            <li>WhatsApp incluso</li>
+          </ul>
+          <button class="plan-btn plan-btn-paid" onclick="showModal('payModal')">Assinar Prata</button>
+        </div>
+        <!-- OURO -->
+        <div class="plan-card">
+          <div class="plan-name">🥇 Ouro</div>
+          <div class="plan-price" style="background:linear-gradient(135deg,#d4af37,#f5d066);-webkit-background-clip:text;-webkit-text-fill-color:transparent">R$ 39,90<small style="-webkit-text-fill-color:var(--gray-400)">/mês</small></div>
+          <div class="plan-desc">Para grandes vendedores</div>
+          <ul class="plan-features">
+            <li>Anúncios ilimitados</li>
+            <li>Destaque Premium</li>
+            <li>Selo ✓ Verificado</li>
+            <li>Aparece primeiro nas buscas</li>
+            <li>Estatísticas avançadas</li>
+            <li>WhatsApp incluso</li>
+          </ul>
+          <button class="plan-btn plan-btn-gold" onclick="showModal('payModal')">Assinar Ouro</button>
+        </div>
+      </div>
+
+      <!-- COMPARISON TABLE -->
+      <div style="background:white;border-radius:var(--radius-lg);border:1px solid var(--gray-200);overflow:hidden;margin-top:32px">
+        <div style="padding:16px 24px;border-bottom:1px solid var(--gray-100);font-weight:800;font-size:16px;color:var(--blue-dark)">Comparativo de Planos</div>
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:13px">
+            <thead>
+              <tr style="background:var(--gray-50)">
+                <th style="padding:12px 16px;text-align:left;font-weight:700;color:var(--gray-600);border-bottom:1px solid var(--gray-200)">Recurso</th>
+                <th style="padding:12px 16px;text-align:center;font-weight:700;color:var(--gray-600);border-bottom:1px solid var(--gray-200)">🆓 Grátis</th>
+                <th style="padding:12px 16px;text-align:center;font-weight:700;color:#9a3412;border-bottom:1px solid var(--gray-200)">🥉 Bronze</th>
+                <th style="padding:12px 16px;text-align:center;font-weight:700;color:var(--blue-mid);border-bottom:2px solid var(--blue-mid);background:var(--blue-pale)">🥈 Prata</th>
+                <th style="padding:12px 16px;text-align:center;font-weight:700;color:#78350f;border-bottom:1px solid var(--gray-200)">🥇 Ouro</th>
+              </tr>
+            </thead>
+            <tbody id="planTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESTAQUE AVULSO -->
+  <div class="section" style="padding-top:0">
+    <div class="spotlight-box">
+      <div class="spotlight-info">
+        <h3>⭐ Destaque Avulso — Sem precisar de plano</h3>
+        <p>Impulsione qualquer anúncio por 24 horas e apareça no topo e no banner principal do site!</p>
+      </div>
+      <div class="spotlight-price">R$ 9,90<small>por 24 horas</small></div>
+      <ul class="spotlight-features">
+        <li>Aparece no topo do site</li>
+        <li>Entra no banner deslizante</li>
+        <li>Selo "Patrocinado"</li>
+        <li>Mais visualizações garantidas</li>
+      </ul>
+      <button class="spotlight-btn" onclick="showModal('payModal')">Destacar Agora</button>
+    </div>
+  </div>
+
+  <!-- PAYMENTS INFO -->
+  <div style="background:white;border-top:1px solid var(--gray-200);padding:24px 20px;text-align:center">
+    <div style="max-width:600px;margin:auto">
+      <p style="font-size:14px;color:var(--gray-400);margin-bottom:12px">Formas de pagamento aceitas:</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center">
+        <span class="pix-badge">PIX</span>
+        <span class="mp-badge">Mercado Pago</span>
+        <span style="background:#1a1f71;color:white;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700">VISA</span>
+        <span style="background:#eb001b;color:white;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700">MASTER</span>
+        <span style="background:#003087;color:white;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700">PayPal</span>
+        <span style="font-size:13px;color:var(--gray-400)">Liberação automática após pagamento</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-home -->
+
+<!-- ==================== PAGE: ADS ==================== -->
+<div id="page-ads" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title" id="adsPageTitle">Todos os Anúncios</div>
+      <button class="btn btn-orange" onclick="showModal('adModal')">+ Anunciar</button>
+    </div>
+    <div class="filters-bar">
+      <input type="text" placeholder="Buscar anúncio..." style="border:1.5px solid var(--gray-200);border-radius:8px;padding:8px 14px;font-size:13px;outline:none;flex:1;min-width:140px">
+      <select style="border:1.5px solid var(--gray-200);border-radius:8px;padding:8px 12px;font-size:13px;outline:none">
+        <option>Todas categorias</option>
+        <option>Veículos</option><option>Imóveis</option><option>Eletrônicos</option>
+        <option>Empregos</option><option>Pets</option><option>Alimentação</option>
+      </select>
+      <select style="border:1.5px solid var(--gray-200);border-radius:8px;padding:8px 12px;font-size:13px;outline:none">
+        <option>Todas cidades</option>
+        <option>Jaraguá do Sul</option><option>Schroeder</option><option>Corupá</option>
+      </select>
+      <select style="border:1.5px solid var(--gray-200);border-radius:8px;padding:8px 12px;font-size:13px;outline:none">
+        <option>Ordenar</option>
+        <option>Mais Recentes</option>
+        <option>Menor Preço</option>
+        <option>Maior Preço</option>
+      </select>
+    </div>
+    <div class="ads-grid" id="adsGridPage"></div>
+  </div>
+</div>
+
+<!-- ==================== PAGE: DASHBOARD ==================== -->
+<div id="page-dashboard" class="page">
+  <div class="dash-header">
+    <div class="inner">
+      <div>
+        <div style="font-size:20px;font-weight:800;color:white">Painel do Anunciante</div>
+        <div style="font-size:14px;opacity:0.7;margin-top:2px">Bem-vindo, João Silva 👋 — Plano Prata</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-orange" onclick="showModal('adModal')">+ Novo Anúncio</button>
+        <button class="btn btn-outline" onclick="showModal('payModal')">Fazer Upgrade</button>
+      </div>
+    </div>
+  </div>
+  <div style="background:white;border-bottom:2px solid var(--gray-200)">
+    <div style="max-width:1200px;margin:auto;padding:0 20px">
+      <div style="display:flex;gap:0">
+        <a style="padding:14px 20px;font-size:14px;font-weight:600;color:var(--blue-mid);border-bottom:3px solid var(--blue-mid);margin-bottom:-2px;cursor:pointer">Meus Anúncios</a>
+        <a style="padding:14px 20px;font-size:14px;font-weight:600;color:var(--gray-400);cursor:pointer">Mensagens</a>
+        <a style="padding:14px 20px;font-size:14px;font-weight:600;color:var(--gray-400);cursor:pointer">Estatísticas</a>
+        <a style="padding:14px 20px;font-size:14px;font-weight:600;color:var(--gray-400);cursor:pointer">Meu Plano</a>
+        <a style="padding:14px 20px;font-size:14px;font-weight:600;color:var(--gray-400);cursor:pointer">Configurações</a>
+      </div>
+    </div>
+  </div>
+  <div class="dash-inner">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label">Anúncios Ativos</div><div class="stat-value" style="color:var(--green)">8</div><div class="stat-sub">↑ 2 este mês</div></div>
+      <div class="stat-card"><div class="stat-label">Visualizações</div><div class="stat-value">1.248</div><div class="stat-sub">↑ 18% vs mês passado</div></div>
+      <div class="stat-card"><div class="stat-label">Contatos WhatsApp</div><div class="stat-value">43</div><div class="stat-sub">↑ 7 esta semana</div></div>
+      <div class="stat-card"><div class="stat-label">Plano Atual</div><div class="stat-value" style="font-size:18px;color:var(--gray-600)">🥈 Prata</div><div class="stat-sub" style="color:var(--orange)">50 anúncios disponíveis</div></div>
+    </div>
+    <div style="background:white;border-radius:var(--radius);border:1px solid var(--gray-200);overflow:hidden">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center">
+        <div style="font-weight:700;color:var(--blue-dark)">Meus Anúncios</div>
+        <button class="btn btn-orange" onclick="showModal('adModal')">+ Novo</button>
+      </div>
+      <table class="admin-table">
+        <thead><tr><th>Anúncio</th><th>Categoria</th><th>Preço</th><th>Views</th><th>Status</th><th>Ações</th></tr></thead>
+        <tbody id="myAdsTable"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PAGE: ADMIN ==================== -->
+<div id="page-admin" class="page">
+  <div class="dash-header">
+    <div class="inner">
+      <div>
+        <div style="font-size:20px;font-weight:800;color:white">🔐 Painel Administrativo</div>
+        <div style="font-size:14px;opacity:0.7;margin-top:2px">Classificados Jaraguá — Admin Master</div>
+      </div>
+      <button class="btn btn-outline" onclick="showPage('home')">← Voltar ao Site</button>
+    </div>
+  </div>
+  <div style="background:white;border-bottom:2px solid var(--gray-200)">
+    <div style="max-width:1200px;margin:auto;padding:0 20px;display:flex;gap:0">
+      <a style="padding:14px 20px;font-size:14px;font-weight:600;color:var(--blue-mid);border-bottom:3px solid var(--blue-mid);margin-bottom:-2px;cursor:pointer">Anúncios</a>
+      <a style="padding:14px 20px;font-size:14px;font-weight:600;color:var(--gray-400);cursor:pointer">Usuários</a>
+      <a style="padding:14px 20px;font-size:14px;font-weight:600;color:var(--gray-400);cursor:pointer">Faturamento</a>
+      <a style="padding:14px 20px;font-size:14px;font-weight:600;color:var(--gray-400);cursor:pointer">Destaques</a>
+      <a style="padding:14px 20px;font-size:14px;font-weight:600;color:var(--gray-400);cursor:pointer">Notificações</a>
+      <a style="padding:14px 20px;font-size:14px;font-weight:600;color:var(--gray-400);cursor:pointer">Categorias</a>
+    </div>
+  </div>
+  <div class="dash-inner">
+    <div class="stats-grid" style="margin-bottom:28px">
+      <div class="stat-card"><div class="stat-label">Total de Anúncios</div><div class="stat-value">4.820</div><div class="stat-sub" style="color:var(--orange)">48 aguardando aprovação</div></div>
+      <div class="stat-card"><div class="stat-label">Usuários</div><div class="stat-value">1.290</div><div class="stat-sub">↑ 34 esta semana</div></div>
+      <div class="stat-card"><div class="stat-label">Faturamento / Mês</div><div class="stat-value" style="font-size:22px">R$4.230</div><div class="stat-sub" style="color:var(--green)">↑ 22% vs mês anterior</div></div>
+      <div class="stat-card"><div class="stat-label">Destaques Ativos</div><div class="stat-value">23</div><div class="stat-sub">R$227,70 em destaques</div></div>
+    </div>
+    <div style="background:white;border-radius:var(--radius);border:1px solid var(--gray-200);overflow:hidden">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+        <div style="font-weight:700;color:var(--blue-dark)">Gerenciar Anúncios</div>
+        <div style="display:flex;gap:8px">
+          <span class="badge badge-pending">48 Pendentes</span>
+          <span class="badge badge-active">4.712 Ativos</span>
+          <span class="badge badge-rejected">60 Rejeitados</span>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="admin-table">
+          <thead><tr><th>ID</th><th>Título</th><th>Usuário</th><th>Categoria</th><th>Preço</th><th>Plano</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead>
+          <tbody id="adminTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-main">
+    <div>
+      <div class="footer-logo">🏷️ Classificados <span style="color:var(--orange)">Jaraguá</span></div>
+      <div class="footer-desc">O maior portal de classificados de Jaraguá do Sul e região. Compre, venda e divulgue de forma rápida, segura e fácil.</div>
+      <div class="footer-social">
+        <div class="social-link">📘</div>
+        <div class="social-link">📸</div>
+        <div class="social-link">💬</div>
+        <div class="social-link">▶️</div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Categorias</h4>
+      <ul>
+        <li>🚗 Veículos</li><li>🏠 Imóveis</li><li>📱 Eletrônicos</li>
+        <li>💼 Empregos</li><li>🐶 Pets</li><li>🍔 Alimentação</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Serviços</h4>
+      <ul>
+        <li>Anunciar Grátis</li><li>Planos Premium</li><li>Destaque Avulso</li>
+        <li>Anúncio Verificado</li><li>API para Empresas</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Suporte</h4>
+      <ul>
+        <li>Central de Ajuda</li><li>Contato</li><li>Política de Privacidade</li>
+        <li>Termos de Uso</li><li>Reportar Anúncio</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Classificados Jaraguá — Todos os direitos reservados.</span>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span class="pix-badge">PIX</span>
+      <span class="mp-badge">Mercado Pago</span>
+      <span>Pagamento 100% seguro</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ==================== MODAL: LOGIN ==================== -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal" style="max-width:420px">
+    <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+    <div class="modal-title">Entrar na sua conta</div>
+    <button class="social-btn" onclick="showNotif('Login com Google em breve!','info')">
+      <span style="font-size:18px">🔵</span> Continuar com Google
+    </button>
+    <button class="social-btn" onclick="showNotif('Login com Facebook em breve!','info')">
+      <span style="font-size:18px">📘</span> Continuar com Facebook
+    </button>
+    <div class="divider">ou entre com e-mail</div>
+    <div class="form-group">
+      <label class="form-label">E-mail</label>
+      <input type="email" class="form-control" placeholder="seu@email.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Senha</label>
+      <input type="password" class="form-control" placeholder="••••••••">
+    </div>
+    <div style="text-align:right;margin-bottom:16px"><a style="font-size:13px;color:var(--blue-light);cursor:pointer">Esqueci minha senha</a></div>
+    <button class="btn btn-blue" style="width:100%;padding:12px;font-size:15px" onclick="doLogin()">Entrar</button>
+    <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--gray-400)">
+      Não tem conta? <a style="color:var(--blue-light);font-weight:700;cursor:pointer" onclick="closeModal('loginModal');showModal('registerModal')">Cadastre-se grátis</a>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MODAL: REGISTER ==================== -->
+<div class="modal-overlay" id="registerModal">
+  <div class="modal" style="max-width:440px">
+    <button class="modal-close" onclick="closeModal('registerModal')">×</button>
+    <div class="modal-title">Criar conta grátis</div>
+    <button class="social-btn" onclick="showNotif('Cadastro com Google em breve!','info')">
+      <span style="font-size:18px">🔵</span> Cadastrar com Google
+    </button>
+    <button class="social-btn" onclick="showNotif('Cadastro com Facebook em breve!','info')">
+      <span style="font-size:18px">📘</span> Cadastrar com Facebook
+    </button>
+    <div class="divider">ou crie com e-mail</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Nome</label><input class="form-control" placeholder="João"></div>
+      <div class="form-group"><label class="form-label">Sobrenome</label><input class="form-control" placeholder="Silva"></div>
+    </div>
+    <div class="form-group"><label class="form-label">E-mail</label><input type="email" class="form-control" placeholder="seu@email.com"></div>
+    <div class="form-group"><label class="form-label">Telefone / WhatsApp</label><input class="form-control" placeholder="(47) 99999-0000"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Senha</label><input type="password" class="form-control" placeholder="••••••••"></div>
+      <div class="form-group"><label class="form-label">Confirmar Senha</label><input type="password" class="form-control" placeholder="••••••••"></div>
+    </div>
+    <div style="font-size:12px;color:var(--gray-400);margin-bottom:16px">Ao criar conta você aceita nossos <a style="color:var(--blue-light)">Termos de Uso</a> e <a style="color:var(--blue-light)">Política de Privacidade</a>.</div>
+    <button class="btn btn-orange" style="width:100%;padding:12px;font-size:15px" onclick="doRegister()">Criar Conta Grátis</button>
+    <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--gray-400)">
+      Já tem conta? <a style="color:var(--blue-light);font-weight:700;cursor:pointer" onclick="closeModal('registerModal');showModal('loginModal')">Entrar</a>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MODAL: AD ==================== -->
+<div class="modal-overlay" id="adModal">
+  <div class="modal" style="max-width:560px">
+    <button class="modal-close" onclick="closeModal('adModal')">×</button>
+    <div class="modal-title">📢 Publicar Anúncio</div>
+    <div class="form-group">
+      <label class="form-label">Título do Anúncio *</label>
+      <input class="form-control" id="adTitle" placeholder="Ex: iPhone 14 Pro 128GB Azul">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Categoria *</label>
+        <select class="form-control" id="adCat">
+          <option value="">Selecione...</option>
+          <option>Veículos</option><option>Imóveis</option><option>Eletrônicos</option>
+          <option>Empregos</option><option>Pets</option><option>Alimentação</option>
+          <option>Serviços</option><option>Moda</option><option>Games</option>
+          <option>Educação</option><option>Esportes</option><option>Outros</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Cidade *</label>
+        <select class="form-control" id="adCity">
+          <option>Jaraguá do Sul</option><option>Schroeder</option><option>Corupá</option>
+          <option>São Bento do Sul</option><option>Joinville</option><option>Blumenau</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Descrição *</label>
+      <textarea class="form-control" id="adDesc" rows="3" placeholder="Descreva seu produto ou serviço com detalhes..."></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Preço (R$)</label>
+        <input class="form-control" id="adPrice" type="number" placeholder="0,00">
+      </div>
+      <div class="form-group">
+        <label class="form-label">WhatsApp *</label>
+        <input class="form-control" id="adWpp" placeholder="(47) 99999-0000">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Fotos do Anúncio</label>
+      <div class="upload-area" onclick="showNotif('Upload de fotos será integrado ao backend!','info')">
+        <div class="upload-icon">📷</div>
+        <div style="font-size:14px;font-weight:600;color:var(--gray-600)">Clique para adicionar fotos</div>
+        <div style="font-size:12px;color:var(--gray-400);margin-top:4px">PNG, JPG até 5MB — máx. 6 fotos</div>
+      </div>
+      <button class="ai-btn" onclick="generateAI()">🤖 Gerar Imagem com IA</button>
+    </div>
+    <div style="background:var(--orange-light);border-radius:var(--radius);padding:12px 16px;margin-bottom:16px;font-size:13px;color:#7c2d12">
+      💡 <strong>Dica:</strong> Adicione fotos reais para até 3x mais contatos!
+    </div>
+    <button class="btn btn-orange" style="width:100%;padding:13px;font-size:15px" onclick="publishAd()">📢 Publicar Anúncio</button>
+    <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--gray-400)">Anúncio sujeito a aprovação em até 2h · Grátis por 7 dias</div>
+  </div>
+</div>
+
+<!-- ==================== MODAL: PAYMENT ==================== -->
+<div class="modal-overlay" id="payModal">
+  <div class="modal" style="max-width:420px">
+    <button class="modal-close" onclick="closeModal('payModal')">×</button>
+    <div class="modal-title">💳 Pagamento</div>
+    <div style="background:var(--blue-pale);border-radius:var(--radius);padding:14px 16px;margin-bottom:20px">
+      <div style="font-weight:700;color:var(--blue-dark);margin-bottom:4px">Plano Prata — R$ 19,90/mês</div>
+      <div style="font-size:13px;color:var(--gray-600)">50 anúncios · Destaque básico · Estatísticas</div>
+    </div>
+    <div class="tab-row" style="margin-bottom:20px">
+      <button class="tab-btn active" onclick="switchPayTab(this,'pix')">PIX</button>
+      <button class="tab-btn" onclick="switchPayTab(this,'card')">Cartão de Crédito</button>
+      <button class="tab-btn" onclick="switchPayTab(this,'mp')">Mercado Pago</button>
+    </div>
+    <div id="pix-tab">
+      <div style="text-align:center;padding:20px 0">
+        <div style="font-size:72px;margin-bottom:12px">⬛</div>
+        <div style="font-size:14px;font-weight:700;color:var(--blue-dark);margin-bottom:8px">Escaneie o QR Code PIX</div>
+        <div style="background:var(--gray-100);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--gray-600);margin-bottom:12px;word-break:break-all">
+          00020126580014br.gov.bcb.pix0136...
+        </div>
+        <button class="btn btn-blue" onclick="showNotif('Chave PIX copiada!','')">📋 Copiar Chave PIX</button>
+      </div>
+      <div style="text-align:center;font-size:12px;color:var(--gray-400)">Liberação automática em até 5 minutos após pagamento</div>
+    </div>
+    <div id="card-tab" style="display:none">
+      <div class="form-group"><label class="form-label">Número do Cartão</label><input class="form-control" placeholder="0000 0000 0000 0000"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Validade</label><input class="form-control" placeholder="MM/AA"></div>
+        <div class="form-group"><label class="form-label">CVV</label><input class="form-control" placeholder="123"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Nome no Cartão</label><input class="form-control" placeholder="JOAO SILVA"></div>
+      <div class="form-group">
+        <label class="form-label">Parcelas</label>
+        <select class="form-control">
+          <option>1x de R$ 19,90 (sem juros)</option>
+          <option>2x de R$ 9,95 (sem juros)</option>
+          <option>3x de R$ 6,63 (sem juros)</option>
+        </select>
+      </div>
+      <button class="btn btn-orange" style="width:100%;padding:12px" onclick="showNotif('Pagamento processado com sucesso! 🎉','')">Pagar R$ 19,90</button>
+    </div>
+    <div id="mp-tab" style="display:none">
+      <div style="text-align:center;padding:24px 0">
+        <div style="font-size:48px;margin-bottom:16px">💙</div>
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px">Pagar com Mercado Pago</div>
+        <div style="font-size:13px;color:var(--gray-400);margin-bottom:20px">Você será redirecionado para o Mercado Pago</div>
+        <button class="btn" style="background:#009ee3;color:white;padding:12px 32px;font-size:15px" onclick="showNotif('Redirecionando para Mercado Pago...','info')">Abrir Mercado Pago</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MODAL: AD DETAIL ==================== -->
+<div class="modal-overlay" id="adDetailModal">
+  <div class="modal" style="max-width:560px">
+    <button class="modal-close" onclick="closeModal('adDetailModal')">×</button>
+    <div id="adDetailContent"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const CATS = [
+  {name:'Veículos',icon:'🚗',count:842},{name:'Imóveis',icon:'🏠',count:391},
+  {name:'Eletrônicos',icon:'📱',count:1230},{name:'Empregos',icon:'💼',count:567},
+  {name:'Pets',icon:'🐶',count:209},{name:'Alimentação',icon:'🍔',count:134},
+  {name:'Serviços',icon:'🛠',count:445},{name:'Moda',icon:'👗',count:378},
+  {name:'Games',icon:'🎮',count:290},{name:'Educação',icon:'📚',count:156},
+  {name:'Esportes',icon:'🏋️',count:198},{name:'Outros',icon:'📦',count:332}
+];
+
+const SAMPLE_ADS = [
+  {id:1,title:'iPhone 14 Pro 128GB',price:4200,cat:'Eletrônicos',city:'Jaraguá do Sul',img:'📱',featured:true,verified:true,wpp:'47999990001',views:342,days:2,desc:'iPhone 14 Pro em excelente estado, sem marcas. Caixa original, carregador e fones inclusos. Bateria 94%.'},
+  {id:2,title:'Celta Preto 2012 Completo',price:22000,cat:'Veículos',city:'Jaraguá do Sul',img:'🚗',featured:true,verified:false,wpp:'47999990002',views:218,days:1,desc:'Celta preto 2012, direção hidráulica, vidros elétricos, ar condicionado. Revisado, IPVA pago.'},
+  {id:3,title:'Casa 3 Quartos Bairro Centenário',price:350000,cat:'Imóveis',city:'Jaraguá do Sul',img:'🏠',featured:true,verified:true,wpp:'47999990003',views:891,days:5,desc:'Casa 3 quartos sendo 1 suíte, 2 banheiros, sala, cozinha, garagem 2 carros. 180m².'},
+  {id:4,title:'Vaga de Operador de Máquinas',price:0,cat:'Empregos',city:'Jaraguá do Sul',img:'💼',featured:false,verified:false,wpp:'47999990004',views:156,days:3,desc:'Empresa de Jaraguá do Sul contrata Operador de Máquinas CNC. Req: experiência mínima 1 ano.'},
+  {id:5,title:'Golden Retriever Filhote',price:1800,cat:'Pets',city:'Schroeder',img:'🐶',featured:false,verified:false,wpp:'47999990005',views:432,days:6,desc:'Filhotes de Golden Retriever, pedigree, microchip, vacinados e vermifugados. 3 machos e 2 fêmeas.'},
+  {id:6,title:'Samsung Galaxy S23 Ultra',price:3800,cat:'Eletrônicos',city:'Jaraguá do Sul',img:'📱',featured:true,verified:true,wpp:'47999990006',views:278,days:0,desc:'Galaxy S23 Ultra 256GB, caneta S-Pen, câmera 200MP. Nota fiscal, em perfeita condição.'},
+  {id:7,title:'Notebook Dell Inspiron i5',price:2300,cat:'Eletrônicos',city:'Corupá',img:'💻',featured:false,verified:false,wpp:'47999990007',views:89,days:4,desc:'Dell Inspiron Core i5, 8GB RAM, SSD 256GB, tela 15.6". Perfeito para trabalho e estudo.'},
+  {id:8,title:'PlayStation 5 + 2 Controles',price:3500,cat:'Games',city:'Jaraguá do Sul',img:'🎮',featured:false,verified:false,wpp:'47999990008',views:674,days:2,desc:'PS5 mídia física, 2 controles DualSense, 3 jogos. Na caixa, em ótimo estado.'},
+  {id:9,title:'Apartamento 2/4 Centro',price:180000,cat:'Imóveis',city:'Jaraguá do Sul',img:'🏢',featured:false,verified:true,wpp:'47999990009',views:341,days:7,desc:'Apartamento 2 quartos, 1 banheiro, sala, cozinha, área de serviço. Prédio com elevador.'},
+  {id:10,title:'Bicicleta Elétrica Nova',price:2900,cat:'Esportes',city:'Jaraguá do Sul',img:'🚲',featured:false,verified:false,wpp:'47999990010',views:127,days:3,desc:'Bicicleta elétrica 350W, autonomia 40km, 7 marchas. Nota fiscal e garantia 1 ano.'},
+  {id:11,title:'Serviço de Manutenção Predial',price:0,cat:'Serviços',city:'Jaraguá do Sul',img:'🛠',featured:false,verified:true,wpp:'47999990011',views:203,days:5,desc:'Serviços de manutenção elétrica, hidráulica e geral. Atendo residências e comércios. Orçamento grátis.'},
+  {id:12,title:'Vestido de Festa Longo Azul',price:280,cat:'Moda',city:'Jaraguá do Sul',img:'👗',featured:false,verified:false,wpp:'47999990012',views:95,days:1,desc:'Vestido de festa longo azul, usado 1 vez, tamanho M. Em ótimo estado.'},
+];
+
+let currentFilter = 'all';
+let carouselIndex = 0;
+const featuredAds = SAMPLE_ADS.filter(a=>a.featured);
+let carouselItemsVisible = Math.floor(window.innerWidth / 240) || 3;
+
+// ============================================================
+// PAGES
+// ============================================================
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(page==='ads') renderAdsPage();
+  if(page==='admin') renderAdminTable();
+  if(page==='dashboard') renderDashTable();
+}
+
+// ============================================================
+// RENDER CATEGORIES
+// ============================================================
+function renderCats() {
+  const g = document.getElementById('categoriesGrid');
+  g.innerHTML = CATS.map(c=>`
+    <div class="cat-card" onclick="filterByCategory('${c.name}')">
+      <div class="cat-icon">${c.icon}</div>
+      <div class="cat-name">${c.name}</div>
+      <div class="cat-count">${c.count.toLocaleString('pt-BR')} anúncios</div>
+    </div>
+  `).join('');
+}
+
+function filterByCategory(cat) {
+  showPage('ads');
+  document.getElementById('adsPageTitle').textContent = cat + ' em Jaraguá do Sul';
+}
+
+// ============================================================
+// RENDER ADS
+// ============================================================
+function adCard(ad) {
+  const price = ad.price === 0 ? '<span class="ad-price free">Combinar</span>' : `<span class="ad-price">R$ ${ad.price.toLocaleString('pt-BR')}</span>`;
+  const verified = ad.verified ? '<span class="ad-badge-verified">✓ Verificado</span>' : '';
+  const featured = ad.featured ? '<span class="ad-badge">⭐ Destaque</span>' : '';
+  return `
+    <div class="ad-card" onclick="openAdDetail(${ad.id})">
+      <div class="ad-card-img-placeholder" style="font-size:48px">${ad.img}</div>
+      ${featured}${verified}
+      <div class="ad-card-body">
+        <div class="ad-title">${ad.title}</div>
+        ${price}
+        <div class="ad-meta">
+          <span>📍 ${ad.city}</span>
+          <span>👁 ${ad.views}</span>
+          <span>${ad.days === 0 ? '🟢 Hoje' : ad.days+'d atrás'}</span>
+        </div>
+        <button class="ad-whatsapp" onclick="event.stopPropagation();openWhatsApp('${ad.wpp}','${ad.title}')">
+          💬 Chamar no WhatsApp
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function renderAdsGrid() {
+  const grid = document.getElementById('adsGrid');
+  let ads = currentFilter === 'all' ? SAMPLE_ADS : SAMPLE_ADS.filter(a=>a.cat===currentFilter);
+  grid.innerHTML = ads.slice(0,8).map(adCard).join('');
+}
+
+function renderAdsPage() {
+  const grid = document.getElementById('adsGridPage');
+  if(grid) grid.innerHTML = SAMPLE_ADS.map(adCard).join('');
+}
+
+function filterAds(cat, el) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderAdsGrid();
+}
+
+function sortAds(val) {
+  showNotif('Ordenação: '+val,'info');
+}
+
+// ============================================================
+// CAROUSEL
+// ============================================================
+function renderCarousel() {
+  const track = document.getElementById('carouselTrack');
+  track.innerHTML = featuredAds.map(ad=>`
+    <div class="ad-card" onclick="openAdDetail(${ad.id})" style="min-width:220px;flex:0 0 220px">
+      <div class="ad-card-img-placeholder" style="font-size:48px">${ad.img}</div>
+      <span class="ad-badge">⭐ Destaque</span>
+      ${ad.verified?'<span class="ad-badge-verified">✓ Verificado</span>':''}
+      <div class="ad-card-body">
+        <div class="ad-title">${ad.title}</div>
+        <div class="ad-price">${ad.price===0?'<span style="color:var(--green);font-size:15px">Combinar</span>':'R$ '+ad.price.toLocaleString('pt-BR')}</div>
+        <div class="ad-meta"><span>📍 ${ad.city}</span></div>
+        <button class="ad-whatsapp" onclick="event.stopPropagation();openWhatsApp('${ad.wpp}','${ad.title}')">💬 WhatsApp</button>
+      </div>
+    </div>
+  `).join('');
+
+  // dots
+  const dots = document.getElementById('carouselDots');
+  dots.innerHTML = featuredAds.map((_,i)=>`<span onclick="goCarousel(${i})" style="width:8px;height:8px;border-radius:50%;background:${i===0?'var(--orange)':'var(--gray-200)'};cursor:pointer;transition:background .2s" id="dot-${i}"></span>`).join('');
+}
+
+function carousel(dir) {
+  const maxIndex = Math.max(0, featuredAds.length - carouselItemsVisible);
+  carouselIndex = Math.max(0, Math.min(maxIndex, carouselIndex + dir));
+  updateCarousel();
+}
+
+function goCarousel(i) {
+  carouselIndex = i;
+  updateCarousel();
+}
+
+function updateCarousel() {
+  const track = document.getElementById('carouselTrack');
+  track.style.transform = `translateX(-${carouselIndex * 236}px)`;
+  featuredAds.forEach((_,i)=>{
+    const d = document.getElementById('dot-'+i);
+    if(d) d.style.background = i===carouselIndex ? 'var(--orange)' : 'var(--gray-200)';
+  });
+}
+
+// Auto carousel
+setInterval(()=>{ 
+  if(carouselIndex >= featuredAds.length-1) carouselIndex=-1;
+  carousel(1);
+}, 4000);
+
+// ============================================================
+// AD DETAIL
+// ============================================================
+function openAdDetail(id) {
+  const ad = SAMPLE_ADS.find(a=>a.id===id);
+  if(!ad) return;
+  const price = ad.price===0 ? '<span style="color:var(--green);font-size:22px;font-weight:800">Combinar</span>' : `<span style="font-size:28px;font-weight:800;color:var(--blue-dark)">R$ ${ad.price.toLocaleString('pt-BR')}</span>`;
+  document.getElementById('adDetailContent').innerHTML = `
+    <div style="text-align:center;font-size:72px;padding:20px;background:var(--gray-50);border-radius:var(--radius);margin-bottom:20px">${ad.img}</div>
+    ${ad.featured?'<span class="badge badge-gold" style="margin-bottom:8px;display:inline-block">⭐ Anúncio Destaque</span>':''}
+    ${ad.verified?'<span class="badge badge-active" style="margin-bottom:8px;margin-left:6px;display:inline-block">✓ Verificado</span>':''}
+    <h2 style="font-size:22px;font-weight:800;color:var(--blue-dark);margin-bottom:8px">${ad.title}</h2>
+    <div style="margin-bottom:12px">${price}</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--gray-400);margin-bottom:16px">
+      <span>📍 ${ad.city}</span>
+      <span>🏷️ ${ad.cat}</span>
+      <span>👁 ${ad.views} visualizações</span>
+      <span>📅 ${ad.days===0?'Hoje':ad.days+'d atrás'}</span>
+    </div>
+    <div style="border-top:1px solid var(--gray-200);padding-top:16px;margin-bottom:20px">
+      <div style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--blue-dark)">Descrição</div>
+      <div style="font-size:14px;color:var(--gray-600);line-height:1.7">${ad.desc}</div>
+    </div>
+    <button class="ad-whatsapp" style="font-size:15px;padding:14px" onclick="openWhatsApp('${ad.wpp}','${ad.title}')">
+      💬 Chamar no WhatsApp
+    </button>
+    <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--gray-400)">
+      Ao clicar você será direcionado ao WhatsApp do anunciante
+    </div>
+  `;
+  showModal('adDetailModal');
+}
+
+function openWhatsApp(num, title) {
+  const msg = encodeURIComponent(`Olá! Vi seu anúncio no Classificados Jaraguá: "${title}". Ainda está disponível?`);
+  window.open(`https://wa.me/55${num.replace(/\D/g,'')}?text=${msg}`,'_blank');
+}
+
+// ============================================================
+// SEARCH
+// ============================================================
+function doSearch() {
+  showPage('ads');
+  showNotif('Buscando anúncios...','info');
+}
+
+// ============================================================
+// ADMIN TABLE
+// ============================================================
+function renderAdminTable() {
+  const t = document.getElementById('adminTable');
+  if(!t) return;
+  const statuses = ['pending','active','active','rejected','active'];
+  const plans = ['free','bronze','silver','gold','free'];
+  t.innerHTML = SAMPLE_ADS.slice(0,10).map((ad,i)=>`
+    <tr>
+      <td>#${ad.id}</td>
+      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${ad.title}</td>
+      <td>Usuário ${i+1}</td>
+      <td>${ad.cat}</td>
+      <td>${ad.price===0?'Combinar':'R$'+ad.price.toLocaleString('pt-BR')}</td>
+      <td><span class="badge badge-${plans[i%5]}">${plans[i%5].charAt(0).toUpperCase()+plans[i%5].slice(1)}</span></td>
+      <td><span class="badge badge-${statuses[i%5]}">${statuses[i%5]==='pending'?'Pendente':statuses[i%5]==='active'?'Ativo':'Rejeitado'}</span></td>
+      <td>${ad.days===0?'Hoje':ad.days+'d atrás'}</td>
+      <td>
+        <div class="action-btns">
+          <button class="action-btn action-btn-approve" onclick="showNotif('Anúncio aprovado!','')">✓</button>
+          <button class="action-btn action-btn-reject" onclick="showNotif('Anúncio rejeitado.','error')">✗</button>
+          <button class="action-btn action-btn-delete" onclick="showNotif('Anúncio excluído.','error')">🗑</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderDashTable() {
+  const t = document.getElementById('myAdsTable');
+  if(!t) return;
+  t.innerHTML = SAMPLE_ADS.slice(0,5).map(ad=>`
+    <tr>
+      <td style="display:flex;align-items:center;gap:10px"><span style="font-size:20px">${ad.img}</span>${ad.title}</td>
+      <td>${ad.cat}</td>
+      <td>${ad.price===0?'Combinar':'R$'+ad.price.toLocaleString('pt-BR')}</td>
+      <td>${ad.views}</td>
+      <td><span class="badge badge-active">Ativo</span></td>
+      <td>
+        <div class="action-btns">
+          <button class="action-btn action-btn-approve" onclick="showNotif('Anúncio editado!','info')">✏️ Editar</button>
+          <button class="action-btn action-btn-delete" onclick="showNotif('Anúncio removido.','error')">🗑</button>
+          <button class="action-btn" style="background:var(--orange-light);color:var(--orange-dark)" onclick="showModal('payModal')">⭐ Destacar</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+// ============================================================
+// MODALS
+// ============================================================
+function showModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('.modal-overlay').forEach(m=>{
+  m.addEventListener('click',e=>{ if(e.target===m) closeModal(m.id); });
+});
+
+// ============================================================
+// ACTIONS
+// ============================================================
+function doLogin() {
+  closeModal('loginModal');
+  showNotif('Login realizado com sucesso! Bem-vindo 👋','');
+  setTimeout(()=>showPage('dashboard'), 600);
+}
+
+function doRegister() {
+  closeModal('registerModal');
+  showNotif('Conta criada com sucesso! Agora publique seu primeiro anúncio 🎉','');
+}
+
+function publishAd() {
+  const title = document.getElementById('adTitle').value;
+  const cat = document.getElementById('adCat').value;
+  if(!title || !cat) { showNotif('Preencha pelo menos Título e Categoria!','error'); return; }
+  closeModal('adModal');
+  showNotif('Anúncio enviado para aprovação! Em breve estará no ar 🚀','');
+}
+
+function generateAI() {
+  showNotif('🤖 IA gerando imagem com base na descrição...','info');
+  setTimeout(()=>showNotif('Imagem gerada com sucesso! Adicionada ao anúncio ✅',''), 2000);
+}
+
+function switchPayTab(btn, tab) {
+  document.querySelectorAll('#payModal .tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ['pix-tab','card-tab','mp-tab'].forEach(t=>{
+    const el = document.getElementById(t);
+    if(el) el.style.display = t===tab+'-tab' ? 'block' : 'none';
+  });
+}
+
+// ============================================================
+// NOTIFICATION
+// ============================================================
+function showNotif(msg, type='') {
+  const n = document.getElementById('notification');
+  n.textContent = msg;
+  n.className = 'notification show' + (type?' '+type:'');
+  setTimeout(()=>n.classList.remove('show'), 3500);
+}
+
+// ============================================================
+// PLAN COMPARISON TABLE
+// ============================================================
+const PLAN_ROWS = [
+  ['Anúncios ativos',       '3',       'Até 10',   'Até 20',    'Ilimitados'],
+  ['Duração dos anúncios',  '7 dias',  'Mensal',   'Mensal',    'Mensal'],
+  ['WhatsApp incluso',      '✓',       '✓',        '✓',         '✓'],
+  ['Renovação automática',  '—',       '✓',        '✓',         '✓'],
+  ['Estatísticas',          '—',       'Básicas',  'Completas', 'Avançadas'],
+  ['Destaque',              '—',       '—',        'Básico',    'Premium'],
+  ['Prioridade nas buscas', '—',       '—',        '✓',         '1º lugar'],
+  ['Selo ✓ Verificado',     '—',       '—',        '—',         '✓'],
+];
+function renderPlanTable() {
+  const tb = document.getElementById('planTableBody');
+  if(!tb) return;
+  tb.innerHTML = PLAN_ROWS.map((row,ri)=>{
+    const cols = row.slice(1).map((val,ci)=>{
+      const silver = ci===1;
+      const bg = silver ? 'background:var(--blue-pale)' : '';
+      const color = val==='✓'||val==='1º lugar' ? 'color:var(--green);font-weight:700' :
+                    val==='—' ? 'color:#ccc' : 'color:var(--gray-800);font-weight:600';
+      return `<td style="padding:11px 16px;text-align:center;border-bottom:1px solid var(--gray-100);${bg};${color}">${val}</td>`;
+    }).join('');
+    return `<tr style="${ri%2?'background:var(--gray-50)':''}">
+      <td style="padding:11px 16px;border-bottom:1px solid var(--gray-100);color:var(--gray-600);font-weight:600">${row[0]}</td>${cols}</tr>`;
+  }).join('');
+}
+
+// ============================================================
+// HERO BANNER SLIDER
+// ============================================================
+const SPONSORED_ADS = [
+  {id:1, title:'iPhone 14 Pro 128GB', price:4200, cat:'Eletrônicos', city:'Jaraguá do Sul', img:'📱', wpp:'47999990001',
+   bg:'linear-gradient(135deg,#0d2b4e 0%,#1a4480 100%)', desc:'Perfeito estado · Caixa original'},
+  {id:3, title:'Casa 3 Quartos Bairro Centenário', price:350000, cat:'Imóveis', city:'Jaraguá do Sul', img:'🏠', wpp:'47999990003',
+   bg:'linear-gradient(135deg,#064e3b 0%,#065f46 100%)', desc:'180m² · Garagem 2 carros'},
+  {id:2, title:'Celta Preto 2012 — Completo', price:22000, cat:'Veículos', city:'Jaraguá do Sul', img:'🚗', wpp:'47999990002',
+   bg:'linear-gradient(135deg,#1e1b4b 0%,#312e81 100%)', desc:'Revisado · IPVA pago · Direção hidráulica'},
+  {id:6, title:'Samsung Galaxy S23 Ultra 256GB', price:3800, cat:'Eletrônicos', city:'Jaraguá do Sul', img:'📱', wpp:'47999990006',
+   bg:'linear-gradient(135deg,#1c1917 0%,#44403c 100%)', desc:'Câmera 200MP · Nota fiscal · S-Pen'},
+  {id:9, title:'Apartamento 2 Quartos — Centro', price:180000, cat:'Imóveis', city:'Jaraguá do Sul', img:'🏢', wpp:'47999990009',
+   bg:'linear-gradient(135deg,#0c4a6e 0%,#0369a1 100%)', desc:'Prédio com elevador · Excelente localização'},
+];
+
+let hbsIndex = 0;
+let hbsTimer = null;
+let hbsProgressTimer = null;
+const HBS_INTERVAL = 5000;
+
+function hbsBuildSlides() {
+  const track = document.getElementById('hbsTrack');
+  const dots = document.getElementById('hbsDots');
+  track.innerHTML = SPONSORED_ADS.map((ad, i) => {
+    const price = ad.price === 0
+      ? `<div class="hbs-price free">Combinar</div>`
+      : `<div class="hbs-price">R$ ${ad.price.toLocaleString('pt-BR')}<small> à vista</small></div>`;
+    return `
+      <div class="hbs-slide" data-id="${ad.id}">
+        <div class="hbs-slide-bg" style="background:${ad.bg}"></div>
+        <div class="hbs-slide-emoji">${ad.img}</div>
+        <div class="hbs-content">
+          <div class="hbs-text">
+            <div class="hbs-sponsored">⭐ PATROCINADO</div>
+            <div class="hbs-label">${ad.cat}</div>
+            <div class="hbs-title">${ad.title}</div>
+            <div class="hbs-city">📍 ${ad.city} &nbsp;·&nbsp; ${ad.desc}</div>
+            ${price}
+            <button class="hbs-wpp" onclick="event.stopPropagation();hbsWhatsApp('${ad.wpp}','${ad.title.replace(/'/g,"\\'")}')">
+              💬 Chamar no WhatsApp
+            </button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+
+  dots.innerHTML = SPONSORED_ADS.map((_, i) =>
+    `<button class="hbs-dot${i===0?' active':''}" onclick="hbsGoTo(${i})" aria-label="Slide ${i+1}"></button>`
+  ).join('');
+
+  // click on slide opens ad detail
+  track.querySelectorAll('.hbs-slide').forEach(s => {
+    s.addEventListener('click', () => openAdDetail(+s.dataset.id));
+  });
+
+  hbsUpdateCounter();
+}
+
+function hbsGoTo(idx) {
+  hbsIndex = (idx + SPONSORED_ADS.length) % SPONSORED_ADS.length;
+  const track = document.getElementById('hbsTrack');
+  track.style.transition = 'transform .55s cubic-bezier(.4,0,.2,1)';
+  track.style.transform = `translateX(-${hbsIndex * 100}%)`;
+  document.querySelectorAll('.hbs-dot').forEach((d, i) => d.classList.toggle('active', i === hbsIndex));
+  hbsUpdateCounter();
+  hbsResetProgress();
+}
+
+function hbsUpdateCounter() {
+  const el = document.getElementById('hbsCounter');
+  if (el) el.textContent = `${hbsIndex + 1} / ${SPONSORED_ADS.length}`;
+}
+
+function hbsResetProgress() {
+  clearInterval(hbsProgressTimer);
+  const bar = document.getElementById('hbsProgress');
+  if (!bar) return;
+  bar.style.transition = 'none';
+  bar.style.width = '0%';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      bar.style.transition = `width ${HBS_INTERVAL}ms linear`;
+      bar.style.width = '100%';
+    });
+  });
+}
+
+function hbsStartAuto() {
+  clearInterval(hbsTimer);
+  hbsTimer = setInterval(() => hbsGoTo(hbsIndex + 1), HBS_INTERVAL);
+  hbsResetProgress();
+}
+
+function hbsWhatsApp(num, title) {
+  const msg = encodeURIComponent(`Olá! Vi o anúncio patrocinado no Classificados Jaraguá: "${title}". Ainda está disponível?`);
+  window.open(`https://wa.me/55${num.replace(/\D/g,'')}?text=${msg}`, '_blank');
+}
+
+// Touch / swipe support
+function hbsInitTouch() {
+  const wrap = document.querySelector('.hbs-track-wrap');
+  if (!wrap) return;
+  let startX = 0, startY = 0, isDragging = false, moved = 0;
+
+  wrap.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    isDragging = true;
+    moved = 0;
+    clearInterval(hbsTimer);
+    document.getElementById('hbsTrack').style.transition = 'none';
+  }, {passive: true});
+
+  wrap.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    moved = e.touches[0].clientX - startX;
+    const track = document.getElementById('hbsTrack');
+    track.style.transform = `translateX(calc(-${hbsIndex * 100}% + ${moved}px))`;
+  }, {passive: true});
+
+  wrap.addEventListener('touchend', () => {
+    isDragging = false;
+    if (Math.abs(moved) > 50) {
+      hbsGoTo(moved < 0 ? hbsIndex + 1 : hbsIndex - 1);
+    } else {
+      hbsGoTo(hbsIndex);
+    }
+    hbsStartAuto();
+  });
+
+  // Mouse drag for desktop
+  wrap.addEventListener('mousedown', e => {
+    startX = e.clientX;
+    isDragging = true;
+    moved = 0;
+    clearInterval(hbsTimer);
+    document.getElementById('hbsTrack').style.transition = 'none';
+    e.preventDefault();
+  });
+  wrap.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    moved = e.clientX - startX;
+    document.getElementById('hbsTrack').style.transform = `translateX(calc(-${hbsIndex * 100}% + ${moved}px))`;
+  });
+  wrap.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    if (Math.abs(moved) > 60) hbsGoTo(moved < 0 ? hbsIndex + 1 : hbsIndex - 1);
+    else hbsGoTo(hbsIndex);
+    hbsStartAuto();
+  });
+  wrap.addEventListener('mouseleave', () => {
+    if (isDragging) { isDragging = false; hbsGoTo(hbsIndex); hbsStartAuto(); }
+  });
+}
+
+// Pause on hover
+document.addEventListener('DOMContentLoaded', () => {
+  const outer = document.getElementById('heroBannerSlider');
+  if (outer) {
+    outer.addEventListener('mouseenter', () => clearInterval(hbsTimer));
+    outer.addEventListener('mouseleave', hbsStartAuto);
+  }
+});
+
+document.getElementById('hbsPrev').addEventListener('click', () => { hbsGoTo(hbsIndex - 1); hbsStartAuto(); });
+document.getElementById('hbsNext').addEventListener('click', () => { hbsGoTo(hbsIndex + 1); hbsStartAuto(); });
+
+// ============================================================
+// INIT
+// ============================================================
+renderCats();
+hbsBuildSlides();
+hbsStartAuto();
+hbsInitTouch();
+renderCarousel();
+renderAdsGrid();
+renderAdminTable();
+renderDashTable();
+renderPlanTable();
+</script>
+</body>
+</html>
