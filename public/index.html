@@ -325,7 +325,7 @@
     <div>
       <a onclick="showModal('loginModal')">Entrar</a>
       <a onclick="showModal('registerModal')">Cadastrar</a>
-      <a onclick="showPage('admin')">Admin</a>
+      <a onclick="gotoAdmin()" style="cursor:pointer">Admin</a>
     </div>
   </div>
 </div>
@@ -665,7 +665,11 @@
         <div style="font-size:20px;font-weight:800;color:white">🔐 Painel Administrativo</div>
         <div style="font-size:14px;opacity:0.7;margin-top:2px">Classificados Jaraguá — Admin Master</div>
       </div>
-      <button class="btn btn-outline" onclick="showPage('home')">← Voltar ao Site</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span id="adminWelcome" style="font-size:13px;opacity:0.75"></span>
+        <button class="btn btn-outline" onclick="showPage('home')">← Voltar ao Site</button>
+        <button class="btn btn-outline" style="border-color:rgba(255,100,100,0.5);color:#fca5a5" onclick="adminLogout()">Sair 🚪</button>
+      </div>
     </div>
   </div>
   <div style="background:white;border-bottom:2px solid var(--gray-200)">
@@ -736,6 +740,41 @@
         <div style="font-size:15px;font-weight:600">Nenhum anúncio encontrado</div>
         <div style="font-size:13px;margin-top:4px">Os anúncios enviados pelo formulário aparecerão aqui.</div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MODAL: ADMIN LOGIN ==================== -->
+<div class="modal-overlay" id="adminLoginModal">
+  <div class="modal" style="max-width:400px">
+    <button class="modal-close" onclick="closeModal('adminLoginModal')">×</button>
+    <div style="text-align:center;font-size:44px;margin-bottom:8px">🔐</div>
+    <div class="modal-title" style="text-align:center;margin-bottom:6px">Acesso Administrativo</div>
+    <div style="background:var(--blue-pale);border-radius:var(--radius);padding:10px 14px;font-size:13px;color:var(--blue-mid);margin-bottom:22px;text-align:center;font-weight:600">
+      Restrito ao administrador autorizado
+    </div>
+    <div class="form-group">
+      <label class="form-label">E-mail</label>
+      <input type="email" class="form-control" id="adminLoginEmail" placeholder="admin@email.com" onkeydown="if(event.key==='Enter')doAdminLogin()">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Senha</label>
+      <input type="password" class="form-control" id="adminLoginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()">
+    </div>
+    <div id="adminLoginError" style="display:none;background:#fee2e2;color:#991b1b;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:14px;font-weight:600"></div>
+    <button class="btn btn-blue" style="width:100%;padding:13px;font-size:15px;border-radius:8px" onclick="doAdminLogin()" id="adminLoginBtn">
+      Entrar no Painel
+    </button>
+  </div>
+</div>
+
+<!-- ==================== MODAL: ADMIN AD DETAIL ==================== -->
+<div class="modal-overlay" id="adminDetailModal">
+  <div class="modal" style="max-width:540px">
+    <button class="modal-close" onclick="closeModal('adminDetailModal')">×</button>
+    <div class="modal-title">📋 Detalhes do Anúncio</div>
+    <div id="adminDetailContent">
+      <div style="text-align:center;padding:32px;color:var(--gray-400)">Carregando...</div>
     </div>
   </div>
 </div>
@@ -1002,12 +1041,21 @@ let carouselItemsVisible = Math.floor(window.innerWidth / 240) || 3;
 // PAGES
 // ============================================================
 function showPage(page) {
+  if (page === 'admin') { gotoAdmin(); return; }
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
   if(page==='ads') renderAdsPage();
-  if(page==='admin') loadAdminData();
   if(page==='dashboard') renderDashTable();
+}
+
+function _showAdminPage() {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-admin').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  const welcome = document.getElementById('adminWelcome');
+  if (welcome) welcome.textContent = 'karolzinhacarvalho21@gmail.com';
+  loadAdminData();
 }
 
 // ============================================================
@@ -1175,39 +1223,115 @@ function doSearch() {
 }
 
 // ============================================================
-// ADMIN — MODERATION SYSTEM
+// ADMIN — AUTH + MODERATION SYSTEM
 // ============================================================
+let adminToken         = localStorage.getItem('adminToken') || null;
 let adminCurrentFilter = 'all';
 
+/* ── auth helpers ──────────────────────────────────────────── */
+function adminFetch(url, opts = {}) {
+  opts.headers = Object.assign({}, opts.headers, {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${adminToken}`
+  });
+  return fetch(url, opts);
+}
+
+function gotoAdmin() {
+  if (adminToken) {
+    _showAdminPage();
+  } else {
+    document.getElementById('adminLoginEmail').value    = '';
+    document.getElementById('adminLoginPassword').value = '';
+    document.getElementById('adminLoginError').style.display = 'none';
+    showModal('adminLoginModal');
+  }
+}
+
+async function doAdminLogin() {
+  const email    = document.getElementById('adminLoginEmail').value.trim();
+  const password = document.getElementById('adminLoginPassword').value;
+  const errBox   = document.getElementById('adminLoginError');
+  const btn      = document.getElementById('adminLoginBtn');
+
+  errBox.style.display = 'none';
+  if (!email || !password) {
+    errBox.textContent   = 'Preencha o e-mail e a senha.';
+    errBox.style.display = 'block';
+    return;
+  }
+
+  btn.textContent = 'Verificando...';
+  btn.disabled    = true;
+
+  try {
+    const res  = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      adminToken = data.token;
+      localStorage.setItem('adminToken', adminToken);
+      closeModal('adminLoginModal');
+      _showAdminPage();
+    } else {
+      errBox.textContent   = data.error || 'Credenciais incorretas.';
+      errBox.style.display = 'block';
+    }
+  } catch (e) {
+    errBox.textContent   = 'Erro de conexão. Tente novamente.';
+    errBox.style.display = 'block';
+  } finally {
+    btn.textContent = 'Entrar no Painel';
+    btn.disabled    = false;
+  }
+}
+
+async function adminLogout() {
+  try { await adminFetch('/api/admin/logout', { method: 'POST' }); } catch(_) {}
+  adminToken = null;
+  localStorage.removeItem('adminToken');
+  showNotif('Sessão encerrada.', 'info');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-home').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── data loaders ──────────────────────────────────────────── */
 async function loadAdminData() {
   await Promise.all([loadAdminStats(), loadAdminTable()]);
 }
 
 async function loadAdminStats() {
   try {
-    const res = await fetch('/api/admin/stats');
+    const res  = await adminFetch('/api/admin/stats');
+    if (res.status === 401) { adminLogout(); return; }
     const data = await res.json();
     if (!data.ok) return;
-    document.getElementById('adminStatTotal').textContent = data.total;
-    document.getElementById('adminStatPending').textContent = data.pending;
-    document.getElementById('adminStatActive').textContent = data.active;
+    document.getElementById('adminStatTotal').textContent    = data.total;
+    document.getElementById('adminStatPending').textContent  = data.pending;
+    document.getElementById('adminStatActive').textContent   = data.active;
     document.getElementById('adminStatRejected').textContent = data.rejected;
     document.getElementById('adminStatPendingSub').textContent =
       data.pending === 0 ? 'nenhum aguardando' : `${data.pending} aguardando aprovação`;
-    document.getElementById('adminBadgePending').textContent = data.pending;
-    document.getElementById('adminBadgeActive').textContent = data.active;
+    document.getElementById('adminBadgePending').textContent  = data.pending;
+    document.getElementById('adminBadgeActive').textContent   = data.active;
     document.getElementById('adminBadgeRejected').textContent = data.rejected;
   } catch (e) { /* silently ignore */ }
 }
 
 async function loadAdminTable() {
-  const t = document.getElementById('adminTable');
+  const t     = document.getElementById('adminTable');
   const empty = document.getElementById('adminEmptyState');
   if (!t) return;
   t.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--gray-400)">Carregando...</td></tr>`;
   try {
-    const qs = adminCurrentFilter !== 'all' ? `?status=${adminCurrentFilter}` : '';
-    const res = await fetch('/api/admin/ads' + qs);
+    const qs   = adminCurrentFilter !== 'all' ? `?status=${adminCurrentFilter}` : '';
+    const res  = await adminFetch('/api/admin/ads' + qs);
+    if (res.status === 401) { adminLogout(); return; }
     const data = await res.json();
     if (!data.ok) throw new Error();
     const ads = data.ads;
@@ -1220,8 +1344,8 @@ async function loadAdminTable() {
     t.innerHTML = ads.map(ad => {
       const statusLabel = ad.status === 'pending' ? 'Pendente' : ad.status === 'active' ? 'Aprovado' : 'Rejeitado';
       const statusClass = ad.status === 'pending' ? 'badge-pending' : ad.status === 'active' ? 'badge-active' : 'badge-rejected';
-      const price = ad.price === 0 ? 'Combinar' : 'R$ ' + Number(ad.price).toLocaleString('pt-BR');
-      const date = new Date(ad.createdAt).toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+      const price = Number(ad.price) === 0 ? 'Combinar' : 'R$ ' + Number(ad.price).toLocaleString('pt-BR');
+      const date  = new Date(ad.created_at).toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
       const canApprove = ad.status !== 'active';
       const canReject  = ad.status !== 'rejected';
       return `
@@ -1236,6 +1360,7 @@ async function loadAdminTable() {
           <td style="font-size:12px;white-space:nowrap">${date}</td>
           <td>
             <div class="action-btns">
+              <button class="action-btn" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe" title="Ver detalhes" onclick="viewAdDetail(${ad.id})">👁 Ver</button>
               ${canApprove ? `<button class="action-btn action-btn-approve" title="Aprovar" onclick="adminApprove(${ad.id})">✓ Aprovar</button>` : ''}
               ${canReject  ? `<button class="action-btn action-btn-reject"  title="Rejeitar" onclick="adminReject(${ad.id})">✗ Rejeitar</button>` : ''}
               <button class="action-btn action-btn-delete" title="Excluir" onclick="adminDelete(${ad.id})">🗑</button>
@@ -1257,29 +1382,97 @@ function adminSetFilter(filter, el) {
 
 async function adminApprove(id) {
   try {
-    const res = await fetch(`/api/admin/ads/${id}/approve`, { method: 'POST' });
+    const res  = await adminFetch(`/api/admin/ads/${id}/approve`, { method: 'POST' });
     const data = await res.json();
-    if (data.ok) { showNotif('✅ Anúncio aprovado e publicado!', ''); loadAdminData(); }
+    if (data.ok) { showNotif('✅ Anúncio aprovado e publicado!', ''); loadAdminData(); closeModal('adminDetailModal'); }
     else showNotif(data.error || 'Erro ao aprovar.', 'error');
   } catch (e) { showNotif('Erro de conexão.', 'error'); }
 }
 
 async function adminReject(id) {
   try {
-    const res = await fetch(`/api/admin/ads/${id}/reject`, { method: 'POST' });
+    const res  = await adminFetch(`/api/admin/ads/${id}/reject`, { method: 'POST' });
     const data = await res.json();
-    if (data.ok) { showNotif('❌ Anúncio rejeitado.', 'error'); loadAdminData(); }
+    if (data.ok) { showNotif('❌ Anúncio rejeitado.', 'error'); loadAdminData(); closeModal('adminDetailModal'); }
     else showNotif(data.error || 'Erro ao rejeitar.', 'error');
   } catch (e) { showNotif('Erro de conexão.', 'error'); }
 }
 
 async function adminDelete(id) {
+  if (!confirm('Excluir este anúncio permanentemente?')) return;
   try {
-    const res = await fetch(`/api/admin/ads/${id}`, { method: 'DELETE' });
+    const res  = await adminFetch(`/api/admin/ads/${id}`, { method: 'DELETE' });
     const data = await res.json();
-    if (data.ok) { showNotif('🗑 Anúncio excluído.', 'error'); loadAdminData(); }
+    if (data.ok) { showNotif('🗑 Anúncio excluído.', 'error'); loadAdminData(); closeModal('adminDetailModal'); }
     else showNotif(data.error || 'Erro ao excluir.', 'error');
   } catch (e) { showNotif('Erro de conexão.', 'error'); }
+}
+
+/* ── ad detail modal ───────────────────────────────────────── */
+async function viewAdDetail(id) {
+  const box = document.getElementById('adminDetailContent');
+  box.innerHTML = `<div style="text-align:center;padding:32px;color:var(--gray-400)">Carregando...</div>`;
+  showModal('adminDetailModal');
+  try {
+    const res  = await adminFetch(`/api/admin/ads/${id}`);
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error);
+    const ad = data.ad;
+
+    const statusLabel = ad.status === 'pending' ? 'Pendente' : ad.status === 'active' ? 'Aprovado' : 'Rejeitado';
+    const statusClass = ad.status === 'pending' ? 'badge-pending' : ad.status === 'active' ? 'badge-active' : 'badge-rejected';
+    const price = Number(ad.price) === 0 ? 'A combinar' : 'R$ ' + Number(ad.price).toLocaleString('pt-BR', {minimumFractionDigits:2});
+    const date  = new Date(ad.created_at).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    const canApprove = ad.status !== 'active';
+    const canReject  = ad.status !== 'rejected';
+
+    box.innerHTML = `
+      <div style="border:1px solid var(--gray-200);border-radius:10px;overflow:hidden;margin-bottom:18px">
+        <div style="background:var(--blue-pale);padding:14px 18px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;color:var(--gray-500)">Anúncio <strong>#${ad.id}</strong> · enviado em ${date}</span>
+          <span class="badge ${statusClass}">${statusLabel}</span>
+        </div>
+        <div style="padding:18px">
+          <div style="font-size:20px;font-weight:800;color:var(--blue-dark);margin-bottom:12px">${ad.title}</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+            <div style="background:var(--gray-100);border-radius:8px;padding:10px 14px">
+              <div style="font-size:11px;color:var(--gray-500);font-weight:600;text-transform:uppercase;margin-bottom:3px">Categoria</div>
+              <div style="font-weight:700">${ad.category}</div>
+            </div>
+            <div style="background:var(--gray-100);border-radius:8px;padding:10px 14px">
+              <div style="font-size:11px;color:var(--gray-500);font-weight:600;text-transform:uppercase;margin-bottom:3px">Cidade</div>
+              <div style="font-weight:700">📍 ${ad.city}</div>
+            </div>
+            <div style="background:var(--gray-100);border-radius:8px;padding:10px 14px">
+              <div style="font-size:11px;color:var(--gray-500);font-weight:600;text-transform:uppercase;margin-bottom:3px">Preço</div>
+              <div style="font-weight:700;color:var(--blue-dark)">${price}</div>
+            </div>
+            <div style="background:var(--gray-100);border-radius:8px;padding:10px 14px">
+              <div style="font-size:11px;color:var(--gray-500);font-weight:600;text-transform:uppercase;margin-bottom:3px">WhatsApp</div>
+              <div style="font-weight:700">${ad.whatsapp}</div>
+            </div>
+          </div>
+          ${ad.description ? `
+          <div style="margin-bottom:14px">
+            <div style="font-size:11px;color:var(--gray-500);font-weight:600;text-transform:uppercase;margin-bottom:6px">Descrição</div>
+            <div style="background:var(--gray-50,#f9fafb);border:1px solid var(--gray-200);border-radius:8px;padding:12px 14px;line-height:1.6;font-size:14px;color:var(--gray-700)">${ad.description}</div>
+          </div>` : ''}
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;font-size:13px;color:#166534">
+            💬 <strong>Contato via WhatsApp:</strong>
+            <a href="https://wa.me/55${ad.whatsapp.replace(/\D/g,'')}" target="_blank" style="color:#166534;font-weight:700;margin-left:4px">
+              Abrir conversa →
+            </a>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        ${canApprove ? `<button class="btn btn-blue" style="flex:1;padding:11px" onclick="adminApprove(${ad.id})">✓ Aprovar e Publicar</button>` : ''}
+        ${canReject  ? `<button class="btn" style="flex:1;padding:11px;background:#fee2e2;color:#991b1b;border:none;border-radius:var(--radius);font-weight:700;cursor:pointer" onclick="adminReject(${ad.id})">✗ Rejeitar</button>` : ''}
+        <button class="btn" style="padding:11px 18px;background:#fee2e2;color:#991b1b;border:none;border-radius:var(--radius);font-weight:700;cursor:pointer" onclick="adminDelete(${ad.id})" title="Excluir permanentemente">🗑</button>
+      </div>`;
+  } catch (e) {
+    box.innerHTML = `<div style="text-align:center;padding:32px;color:#ef4444">Erro ao carregar detalhes.</div>`;
+  }
 }
 
 function renderDashTable() {

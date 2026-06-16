@@ -1,14 +1,18 @@
-const http = require('http');
-const fs   = require('fs');
-const path = require('path');
+const http   = require('http');
+const fs     = require('fs');
+const path   = require('path');
+const crypto = require('crypto');
 const { Pool } = require('pg');
 
 const PORT = 5000;
 const HOST = '0.0.0.0';
 
-const ALLOWED_CITIES = ['Jaraguá do Sul', 'Guaramirim', 'Schroeder'];
+const ALLOWED_CITIES  = ['Jaraguá do Sul', 'Guaramirim', 'Schroeder'];
+const ADMIN_EMAIL     = 'karolzinhacarvalho21@gmail.com';
+const ADMIN_PASSWORD  = process.env.ADMIN_PASSWORD || 'Admin@2025';
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const pool           = new Pool({ connectionString: process.env.DATABASE_URL });
+const activeSessions = new Set();
 
 // ── helpers ────────────────────────────────────────────────────────────────
 function parseBody(req) {
@@ -40,6 +44,12 @@ function matchRoute(url, pattern) {
   return params;
 }
 
+function checkAdminAuth(req) {
+  const auth  = req.headers['authorization'] || '';
+  const token = auth.replace(/^Bearer\s+/i, '').trim();
+  return token && activeSessions.has(token);
+}
+
 // ── server ─────────────────────────────────────────────────────────────────
 const server = http.createServer(async (req, res) => {
   const url    = req.url.split('?')[0];
@@ -56,7 +66,33 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // ── POST /api/ads  (submit new ad) ──
+  // ── POST /api/admin/login ──
+  if (url === '/api/admin/login' && method === 'POST') {
+    try {
+      const body = await parseBody(req);
+      const { email, password } = body;
+
+      if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+        return jsonRes(res, 401, { ok: false, error: 'E-mail ou senha incorretos.' });
+      }
+
+      const token = crypto.randomBytes(32).toString('hex');
+      activeSessions.add(token);
+      return jsonRes(res, 200, { ok: true, token });
+    } catch (e) {
+      return jsonRes(res, 400, { ok: false, error: 'Requisição inválida.' });
+    }
+  }
+
+  // ── POST /api/admin/logout ──
+  if (url === '/api/admin/logout' && method === 'POST') {
+    const auth  = req.headers['authorization'] || '';
+    const token = auth.replace(/^Bearer\s+/i, '').trim();
+    activeSessions.delete(token);
+    return jsonRes(res, 200, { ok: true });
+  }
+
+  // ── POST /api/ads  (submit new ad — public) ──
   if (url === '/api/ads' && method === 'POST') {
     try {
       const body = await parseBody(req);
@@ -84,16 +120,21 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+  // ── All routes below require admin authentication ──
+  if (url.startsWith('/api/admin/') && !checkAdminAuth(req)) {
+    return jsonRes(res, 401, { ok: false, error: 'Não autorizado. Faça login como administrador.' });
+  }
+
   // ── GET /api/admin/ads  (list ads, optional ?status=) ──
   if (url === '/api/admin/ads' && method === 'GET') {
     try {
       const qs     = req.url.includes('?') ? req.url.split('?')[1] : '';
       const params = Object.fromEntries(new URLSearchParams(qs));
-      const VALID_STATUS = ['pending', 'active', 'rejected'];
+      const VALID  = ['pending', 'active', 'rejected'];
 
       let query  = 'SELECT * FROM ads';
       let values = [];
-      if (params.status && VALID_STATUS.includes(params.status)) {
+      if (params.status && VALID.includes(params.status)) {
         query  += ' WHERE status = $1';
         values  = [params.status];
       }
@@ -104,6 +145,19 @@ const server = http.createServer(async (req, res) => {
     } catch (e) {
       console.error('GET /api/admin/ads:', e.message);
       return jsonRes(res, 500, { ok: false, error: 'Erro ao buscar anúncios.' });
+    }
+  }
+
+  // ── GET /api/admin/ads/:id  (single ad detail) ──
+  const detailP = matchRoute(url, '/api/admin/ads/:id');
+  if (detailP && method === 'GET') {
+    try {
+      const { rows } = await pool.query('SELECT * FROM ads WHERE id=$1', [Number(detailP.id)]);
+      if (!rows.length) return jsonRes(res, 404, { ok: false, error: 'Anúncio não encontrado.' });
+      return jsonRes(res, 200, { ok: true, ad: rows[0] });
+    } catch (e) {
+      console.error('GET /api/admin/ads/:id:', e.message);
+      return jsonRes(res, 500, { ok: false, error: 'Erro ao buscar anúncio.' });
     }
   }
 
