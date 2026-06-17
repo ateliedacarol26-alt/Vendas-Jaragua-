@@ -32,7 +32,7 @@
   }
   html { scroll-behavior: smooth; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--gray-100); color: var(--gray-800); }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--gray-100); color: var(--gray-800); overflow-x: hidden; }
   a { text-decoration: none; color: inherit; }
   img { max-width: 100%; border-radius: var(--radius); }
 
@@ -351,9 +351,9 @@
       </select>
       <button onclick="doSearch()">🔍 Buscar</button>
     </div>
-    <div class="header-actions">
-      <button class="btn btn-outline" onclick="showModal('loginModal')">Entrar</button>
-      <button class="btn btn-orange" onclick="showModal('adModal')">+ Anunciar</button>
+    <div class="header-actions" id="headerActions">
+      <button class="btn btn-outline" id="headerLoginBtn" onclick="showModal('loginModal')">Entrar</button>
+      <button class="btn btn-orange" onclick="requireLogin(()=>showModal('adModal'))">+ Anunciar</button>
     </div>
   </div>
 </header>
@@ -368,7 +368,7 @@
       <h1>Compre, Venda e Divulgue em <span>Jaraguá do Sul</span></h1>
       <p>O maior portal de classificados da região. Milhares de anúncios esperando por você.</p>
       <div class="hero-btns">
-        <button class="btn btn-orange" style="padding:14px 32px;font-size:16px" onclick="showModal('adModal')">📢 Anunciar Agora</button>
+        <button class="btn btn-orange" style="padding:14px 32px;font-size:16px" onclick="requireLogin(()=>showModal('adModal'))">📢 Anunciar Agora</button>
         <button class="btn btn-white" style="padding:14px 32px;font-size:16px" onclick="document.getElementById('carrossel-destaques').scrollIntoView({behavior:'smooth'})">🔎 Ver Anúncios</button>
       </div>
 
@@ -390,8 +390,8 @@
         </select>
         <select id="sh-city">
           <option value="">Todas as Cidades</option>
-          <option>Jaraguá do Sul</option><option>Schroeder</option><option>Corupá</option>
-          <option>São Bento do Sul</option><option>Joinville</option><option>Blumenau</option>
+          <option>Jaraguá do Sul</option><option>Guaramirim</option><option>Schroeder</option>
+          <option>Massaranduba</option><option>Corupá</option>
         </select>
         <button onclick="doSearch()">Pesquisar</button>
       </div>
@@ -423,7 +423,7 @@
   <div class="section" style="padding-top:0">
     <div class="section-header">
       <div class="section-title">🗺️ Nossa Região de Cobertura</div>
-      <span style="font-size:13px;color:var(--gray-400)">Jaraguá do Sul · Guaramirim · Schroeder</span>
+      <span style="font-size:13px;color:var(--gray-400)">Jaraguá do Sul · Guaramirim · Schroeder · Massaranduba · Corupá</span>
     </div>
     <div style="border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.10);border:1px solid var(--gray-200)">
       <iframe
@@ -435,18 +435,11 @@
       </iframe>
     </div>
     <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
-      <a href="https://maps.google.com/maps?q=Jaraguá+do+Sul,SC" target="_blank"
-         style="font-size:13px;color:var(--blue-light);font-weight:600;text-decoration:none">
-        📍 Ver Jaraguá do Sul no Google Maps →
-      </a>
-      <a href="https://maps.google.com/maps?q=Guaramirim,SC" target="_blank"
-         style="font-size:13px;color:var(--blue-light);font-weight:600;text-decoration:none">
-        📍 Guaramirim →
-      </a>
-      <a href="https://maps.google.com/maps?q=Schroeder,SC" target="_blank"
-         style="font-size:13px;color:var(--blue-light);font-weight:600;text-decoration:none">
-        📍 Schroeder →
-      </a>
+      <a href="https://maps.google.com/maps?q=Jaraguá+do+Sul,SC" target="_blank" style="font-size:13px;color:var(--blue-light);font-weight:600;text-decoration:none">📍 Jaraguá do Sul →</a>
+      <a href="https://maps.google.com/maps?q=Guaramirim,SC" target="_blank" style="font-size:13px;color:var(--blue-light);font-weight:600;text-decoration:none">📍 Guaramirim →</a>
+      <a href="https://maps.google.com/maps?q=Schroeder,SC" target="_blank" style="font-size:13px;color:var(--blue-light);font-weight:600;text-decoration:none">📍 Schroeder →</a>
+      <a href="https://maps.google.com/maps?q=Massaranduba,SC" target="_blank" style="font-size:13px;color:var(--blue-light);font-weight:600;text-decoration:none">📍 Massaranduba →</a>
+      <a href="https://maps.google.com/maps?q=Corupá,SC" target="_blank" style="font-size:13px;color:var(--blue-light);font-weight:600;text-decoration:none">📍 Corupá →</a>
     </div>
   </div>
 
@@ -527,7 +520,7 @@
             <li>WhatsApp incluso</li>
             <li>Estatísticas básicas</li>
           </ul>
-          <button class="plan-btn plan-btn-paid" onclick="showModal('payModal')">Assinar Bronze</button>
+          <button class="plan-btn plan-btn-paid" onclick="requireLogin(()=>startPayment('bronze','Plano Bronze — Classificados Jaraguá',9.90))">Assinar Bronze</button>
         </div>
         <!-- PRATA -->
         <div class="plan-card featured">
@@ -542,7 +535,7 @@
             <li>Prioridade nas buscas</li>
             <li>WhatsApp incluso</li>
           </ul>
-          <button class="plan-btn plan-btn-paid" onclick="showModal('payModal')">Assinar Prata</button>
+          <button class="plan-btn plan-btn-paid" onclick="requireLogin(()=>startPayment('prata','Plano Prata — Classificados Jaraguá',19.90))">Assinar Prata</button>
         </div>
         <!-- OURO -->
         <div class="plan-card">
@@ -557,28 +550,10 @@
             <li>Estatísticas avançadas</li>
             <li>WhatsApp incluso</li>
           </ul>
-          <button class="plan-btn plan-btn-gold" onclick="showModal('payModal')">Assinar Ouro</button>
+          <button class="plan-btn plan-btn-gold" onclick="requireLogin(()=>startPayment('ouro','Plano Ouro — Classificados Jaraguá',39.90))">Assinar Ouro</button>
         </div>
       </div>
 
-      <!-- COMPARISON TABLE -->
-      <div style="background:white;border-radius:var(--radius-lg);border:1px solid var(--gray-200);overflow:hidden;margin-top:32px">
-        <div style="padding:16px 24px;border-bottom:1px solid var(--gray-100);font-weight:800;font-size:16px;color:var(--blue-dark)">Comparativo de Planos</div>
-        <div style="overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse;font-size:13px">
-            <thead>
-              <tr style="background:var(--gray-50)">
-                <th style="padding:12px 16px;text-align:left;font-weight:700;color:var(--gray-600);border-bottom:1px solid var(--gray-200)">Recurso</th>
-                <th style="padding:12px 16px;text-align:center;font-weight:700;color:var(--gray-600);border-bottom:1px solid var(--gray-200)">🆓 Grátis</th>
-                <th style="padding:12px 16px;text-align:center;font-weight:700;color:#9a3412;border-bottom:1px solid var(--gray-200)">🥉 Bronze</th>
-                <th style="padding:12px 16px;text-align:center;font-weight:700;color:var(--blue-mid);border-bottom:2px solid var(--blue-mid);background:var(--blue-pale)">🥈 Prata</th>
-                <th style="padding:12px 16px;text-align:center;font-weight:700;color:#78350f;border-bottom:1px solid var(--gray-200)">🥇 Ouro</th>
-              </tr>
-            </thead>
-            <tbody id="planTableBody"></tbody>
-          </table>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -596,7 +571,7 @@
         <li>Selo "Patrocinado"</li>
         <li>Mais visualizações garantidas</li>
       </ul>
-      <button class="spotlight-btn" onclick="showModal('payModal')">Destacar Agora</button>
+      <button class="spotlight-btn" onclick="requireLogin(()=>startPayment('destaque','Destaque Avulso 24h — Classificados Jaraguá',9.90))">Destacar Agora</button>
     </div>
   </div>
 
@@ -633,7 +608,8 @@
       </select>
       <select style="border:1.5px solid var(--gray-200);border-radius:8px;padding:8px 12px;font-size:13px;outline:none">
         <option>Todas cidades</option>
-        <option>Jaraguá do Sul</option><option>Schroeder</option><option>Corupá</option>
+        <option>Jaraguá do Sul</option><option>Guaramirim</option><option>Schroeder</option>
+        <option>Massaranduba</option><option>Corupá</option>
       </select>
       <select style="border:1.5px solid var(--gray-200);border-radius:8px;padding:8px 12px;font-size:13px;outline:none">
         <option>Ordenar</option>
@@ -655,7 +631,7 @@
         <div style="font-size:14px;opacity:0.7;margin-top:2px">Bem-vindo, João Silva 👋 — Plano Prata</div>
       </div>
       <div style="display:flex;gap:10px">
-        <button class="btn btn-orange" onclick="showModal('adModal')">+ Novo Anúncio</button>
+        <button class="btn btn-orange" onclick="requireLogin(()=>showModal('adModal'))">+ Novo Anúncio</button>
         <button class="btn btn-outline" onclick="showModal('payModal')">Fazer Upgrade</button>
       </div>
     </div>
@@ -864,9 +840,6 @@
     <button class="modal-close" onclick="closeModal('loginModal')">×</button>
     <div class="modal-title">Entrar na sua conta</div>
     <div id="googleLoginBtnContainer" style="display:flex;justify-content:center;margin-bottom:10px;min-height:44px"></div>
-    <button class="social-btn" onclick="showNotif('Login com Facebook em breve!','info')">
-      <span style="font-size:18px">📘</span> Continuar com Facebook
-    </button>
     <div class="divider">ou entre com e-mail</div>
     <div class="form-group">
       <label class="form-label">E-mail</label>
@@ -890,9 +863,6 @@
     <button class="modal-close" onclick="closeModal('registerModal')">×</button>
     <div class="modal-title">Criar conta grátis</div>
     <div id="googleRegisterBtnContainer" style="display:flex;justify-content:center;margin-bottom:10px;min-height:44px"></div>
-    <button class="social-btn" onclick="showNotif('Cadastro com Facebook em breve!','info')">
-      <span style="font-size:18px">📘</span> Cadastrar com Facebook
-    </button>
     <div class="divider">ou crie com e-mail</div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Nome</label><input class="form-control" placeholder="João"></div>
@@ -939,6 +909,8 @@
           <option>Jaraguá do Sul</option>
           <option>Guaramirim</option>
           <option>Schroeder</option>
+          <option>Massaranduba</option>
+          <option>Corupá</option>
         </select>
       </div>
     </div>
@@ -1583,7 +1555,7 @@ function doRegister() {
   showNotif('Conta criada com sucesso! Agora publique seu primeiro anúncio 🎉','');
 }
 
-const ALLOWED_CITIES = ['Jaraguá do Sul', 'Guaramirim', 'Schroeder'];
+const ALLOWED_CITIES = ['Jaraguá do Sul', 'Guaramirim', 'Schroeder', 'Massaranduba', 'Corupá'];
 
 async function publishAd() {
   const title = document.getElementById('adTitle').value.trim();
@@ -1598,7 +1570,7 @@ async function publishAd() {
   if (!wpp) { showNotif('Informe o WhatsApp para contato.', 'error'); return; }
 
   if (!ALLOWED_CITIES.includes(city)) {
-    showNotif('Desculpe, no momento aceitamos anúncios apenas para Jaraguá do Sul, Guaramirim e Schroeder.', 'error');
+    showNotif('Aceitamos anúncios apenas para Jaraguá do Sul, Guaramirim, Schroeder, Massaranduba e Corupá.', 'error');
     return;
   }
 
@@ -1632,6 +1604,27 @@ function switchPayTab(btn, tab) {
     const el = document.getElementById(t);
     if(el) el.style.display = t===tab+'-tab' ? 'block' : 'none';
   });
+}
+
+async function startPayment(plan, title, price) {
+  showNotif('Gerando link de pagamento...', 'info');
+  try {
+    const res = await fetch('/api/payment/create-preference', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan, title, price })
+    });
+    const data = await res.json();
+    if (data.ok && data.init_point) {
+      window.open(data.init_point, '_blank');
+    } else if (data.ok && data.sandbox_init_point) {
+      window.open(data.sandbox_init_point, '_blank');
+    } else {
+      showNotif(data.error || 'Erro ao gerar pagamento. Tente novamente.', 'error');
+    }
+  } catch (e) {
+    showNotif('Erro de conexão. Tente novamente.', 'error');
+  }
 }
 
 // ============================================================
@@ -1850,19 +1843,43 @@ let userSessionToken = localStorage.getItem('userToken') || null;
 
 function updateUserUI() {
   const area = document.getElementById('topbarUserArea');
-  if (!area) return;
+  const headerBtn = document.getElementById('headerLoginBtn');
   if (currentUser) {
     const firstName = currentUser.name ? currentUser.name.split(' ')[0] : 'Você';
     const pic = currentUser.picture
       ? `<img src="${currentUser.picture}" style="width:22px;height:22px;border-radius:50%;vertical-align:middle;margin-right:4px" referrerpolicy="no-referrer">`
       : '👤';
-    area.innerHTML = `
+    if (area) area.innerHTML = `
       <span style="color:rgba(255,255,255,0.85);font-weight:600">${pic} ${firstName}</span>
       <a onclick="userLogout()" style="color:rgba(255,255,255,0.65);cursor:pointer;font-size:13px">Sair</a>`;
+    if (headerBtn) {
+      headerBtn.textContent = firstName;
+      headerBtn.onclick = () => showPage('dashboard');
+    }
   } else {
-    area.innerHTML = `
+    if (area) area.innerHTML = `
       <a onclick="showModal('loginModal')">Entrar</a>
       <a onclick="showModal('registerModal')">Cadastrar</a>`;
+    if (headerBtn) {
+      headerBtn.textContent = 'Entrar';
+      headerBtn.onclick = () => showModal('loginModal');
+    }
+  }
+}
+
+let _pendingAction = null;
+function requireLogin(action) {
+  if (currentUser) { action(); return; }
+  _pendingAction = action;
+  showModal('loginModal');
+}
+
+async function handleGoogleCredentialWithRedirect(response) {
+  await handleGoogleCredential(response);
+  if (_pendingAction && currentUser) {
+    const act = _pendingAction;
+    _pendingAction = null;
+    setTimeout(act, 300);
   }
 }
 
@@ -1914,7 +1931,7 @@ function initGoogleSignIn(clientId) {
   }
   google.accounts.id.initialize({
     client_id: clientId,
-    callback: handleGoogleCredential,
+    callback: handleGoogleCredentialWithRedirect,
     auto_select: false,
     cancel_on_tap_outside: true
   });
@@ -1954,9 +1971,7 @@ hbsStartAuto();
 hbsInitTouch();
 renderCarousel();
 renderAdsGrid();
-renderAdminTable();
 renderDashTable();
-renderPlanTable();
 updateUserUI();
 loadGoogleConfig();
 </script>

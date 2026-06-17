@@ -1,0 +1,4 @@
+- [Classificados Jaragua stack](classificados-stack.md) — Node.js http server + pg + mercadopago; single-file SPA at public/index.html; no framework.
+- [City list](classificados-stack.md) — ALLOWED_CITIES must be kept in sync in server.js AND in the JS constant inside index.html.
+- [MP payment flow](classificados-stack.md) — POST /api/payment/create-preference returns init_point; requires MP_ACCESS_TOKEN env secret; uses mercadopago v3 SDK (MercadoPagoConfig + Preference).
+- [Google auth domain](classificados-stack.md) — GSI 403 errors = Replit domain not yet added to GCP OAuth authorized origins; user must do this manually.

@@ -4,11 +4,12 @@ const fs     = require('fs');
 const path   = require('path');
 const crypto = require('crypto');
 const { Pool } = require('pg');
+const { MercadoPagoConfig, Preference } = require('mercadopago');
 
 const PORT = 5000;
 const HOST = '0.0.0.0';
 
-const ALLOWED_CITIES  = ['Jaraguá do Sul', 'Guaramirim', 'Schroeder'];
+const ALLOWED_CITIES  = ['Jaraguá do Sul', 'Guaramirim', 'Schroeder', 'Massaranduba', 'Corupá'];
 const ADMIN_EMAIL     = 'karolzinhacarvalho21@gmail.com';
 const ADMIN_PASSWORD  = process.env.ADMIN_PASSWORD || 'Admin@2025';
 
@@ -181,7 +182,7 @@ const server = http.createServer(async (req, res) => {
       if (!ALLOWED_CITIES.includes(city))
         return jsonRes(res, 422, {
           ok: false,
-          error: 'Desculpe, no momento aceitamos anúncios apenas para Jaraguá do Sul, Guaramirim e Schroeder.'
+          error: 'Aceitamos anúncios apenas para Jaraguá do Sul, Guaramirim, Schroeder, Massaranduba e Corupá.'
         });
 
       await pool.query(
@@ -308,6 +309,39 @@ const server = http.createServer(async (req, res) => {
     } catch (e) {
       console.error('delete:', e.message);
       return jsonRes(res, 500, { ok: false, error: 'Erro ao excluir anúncio.' });
+    }
+  }
+
+  // ── POST /api/payment/create-preference  (Mercado Pago) ──
+  if (url === '/api/payment/create-preference' && method === 'POST') {
+    try {
+      const mpToken = process.env.MP_ACCESS_TOKEN;
+      if (!mpToken) return jsonRes(res, 503, { ok: false, error: 'Pagamento não configurado.' });
+
+      const body = await parseBody(req);
+      const { plan, title, price } = body;
+      if (!plan || !title || !price) return jsonRes(res, 400, { ok: false, error: 'Dados inválidos.' });
+
+      const client = new MercadoPagoConfig({ accessToken: mpToken });
+      const prefAPI = new Preference(client);
+
+      const host = req.headers['host'] || 'localhost:5000';
+      const proto = req.headers['x-forwarded-proto'] || 'http';
+      const base = `${proto}://${host}`;
+
+      const result = await prefAPI.create({
+        body: {
+          items: [{ id: plan, title, quantity: 1, unit_price: Number(price), currency_id: 'BRL' }],
+          back_urls: { success: base, failure: base, pending: base },
+          auto_return: 'approved',
+          statement_descriptor: 'Classificados Jaraguá'
+        }
+      });
+
+      return jsonRes(res, 200, { ok: true, init_point: result.init_point, sandbox_init_point: result.sandbox_init_point });
+    } catch (e) {
+      console.error('POST /api/payment/create-preference:', e.message);
+      return jsonRes(res, 500, { ok: false, error: 'Erro ao criar preferência de pagamento.' });
     }
   }
 
