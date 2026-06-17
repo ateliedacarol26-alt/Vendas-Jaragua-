@@ -843,11 +843,11 @@
     <div class="divider">ou entre com e-mail</div>
     <div class="form-group">
       <label class="form-label">E-mail</label>
-      <input type="email" class="form-control" placeholder="seu@email.com">
+      <input type="email" class="form-control" id="loginEmail" placeholder="seu@email.com">
     </div>
     <div class="form-group">
       <label class="form-label">Senha</label>
-      <input type="password" class="form-control" placeholder="••••••••">
+      <input type="password" class="form-control" id="loginSenha" placeholder="••••••••">
     </div>
     <div style="text-align:right;margin-bottom:16px"><a style="font-size:13px;color:var(--blue-light);cursor:pointer">Esqueci minha senha</a></div>
     <button class="btn btn-blue" style="width:100%;padding:12px;font-size:15px" onclick="doLogin()">Entrar</button>
@@ -865,14 +865,25 @@
     <div id="googleRegisterBtnContainer" style="display:flex;justify-content:center;margin-bottom:10px;min-height:44px"></div>
     <div class="divider">ou crie com e-mail</div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Nome</label><input class="form-control" placeholder="João"></div>
-      <div class="form-group"><label class="form-label">Sobrenome</label><input class="form-control" placeholder="Silva"></div>
+      <div class="form-group"><label class="form-label">Nome *</label><input class="form-control" id="regNome" placeholder="João"></div>
+      <div class="form-group"><label class="form-label">Sobrenome</label><input class="form-control" id="regSobrenome" placeholder="Silva"></div>
     </div>
-    <div class="form-group"><label class="form-label">E-mail</label><input type="email" class="form-control" placeholder="seu@email.com"></div>
-    <div class="form-group"><label class="form-label">Telefone / WhatsApp</label><input class="form-control" placeholder="(47) 99999-0000"></div>
+    <div class="form-group"><label class="form-label">E-mail *</label><input type="email" class="form-control" id="regEmail" placeholder="seu@email.com"></div>
+    <div class="form-group"><label class="form-label">Telefone / WhatsApp</label><input class="form-control" id="regWpp" placeholder="(47) 99999-0000"></div>
+    <div class="form-group">
+      <label class="form-label">Cidade * <span style="font-size:11px;color:var(--gray-400);font-weight:400">(onde você está localizado)</span></label>
+      <select class="form-control" id="regCity">
+        <option value="">Selecione sua cidade...</option>
+        <option>Jaraguá do Sul</option>
+        <option>Guaramirim</option>
+        <option>Schroeder</option>
+        <option>Massaranduba</option>
+        <option>Corupá</option>
+      </select>
+    </div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Senha</label><input type="password" class="form-control" placeholder="••••••••"></div>
-      <div class="form-group"><label class="form-label">Confirmar Senha</label><input type="password" class="form-control" placeholder="••••••••"></div>
+      <div class="form-group"><label class="form-label">Senha *</label><input type="password" class="form-control" id="regSenha" placeholder="••••••••"></div>
+      <div class="form-group"><label class="form-label">Confirmar Senha</label><input type="password" class="form-control" id="regSenha2" placeholder="••••••••"></div>
     </div>
     <div style="font-size:12px;color:var(--gray-400);margin-bottom:16px">Ao criar conta você aceita nossos <a style="color:var(--blue-light)">Termos de Uso</a> e <a style="color:var(--blue-light)">Política de Privacidade</a>.</div>
     <button class="btn btn-orange" style="width:100%;padding:12px;font-size:15px" onclick="doRegister()">Criar Conta Grátis</button>
@@ -1544,15 +1555,46 @@ document.querySelectorAll('.modal-overlay').forEach(m=>{
 // ============================================================
 // ACTIONS
 // ============================================================
+function _finishLogin(user) {
+  currentUser      = user;
+  userSessionToken = 'local_' + Date.now();
+  localStorage.setItem('currentUser', JSON.stringify(currentUser));
+  localStorage.setItem('userToken', userSessionToken);
+  updateUserUI();
+  if (_pendingAction) {
+    const act = _pendingAction;
+    _pendingAction = null;
+    setTimeout(act, 300);
+  }
+}
+
 function doLogin() {
+  const email = (document.getElementById('loginEmail') || {}).value?.trim();
+  const senha = (document.getElementById('loginSenha') || {}).value;
+  if (!email) { showNotif('Informe seu e-mail para entrar.', 'error'); return; }
+  if (!senha)  { showNotif('Informe sua senha.', 'error'); return; }
   closeModal('loginModal');
-  showNotif('Login realizado com sucesso! Bem-vindo 👋','');
-  setTimeout(()=>showPage('dashboard'), 600);
+  const name = email.split('@')[0];
+  _finishLogin({ name, email, picture: null });
+  showNotif(`Bem-vindo(a), ${name}! 👋`, '');
 }
 
 function doRegister() {
+  const nome  = (document.getElementById('regNome')  || {}).value?.trim();
+  const email = (document.getElementById('regEmail') || {}).value?.trim();
+  const city  = (document.getElementById('regCity')  || {}).value;
+  const senha = (document.getElementById('regSenha') || {}).value;
+  const senha2= (document.getElementById('regSenha2')|| {}).value;
+
+  if (!nome)  { showNotif('Informe seu nome.', 'error'); return; }
+  if (!email) { showNotif('Informe seu e-mail.', 'error'); return; }
+  if (!city)  { showNotif('Selecione sua cidade.', 'error'); return; }
+  if (!senha) { showNotif('Crie uma senha.', 'error'); return; }
+  if (senha !== senha2) { showNotif('As senhas não coincidem.', 'error'); return; }
+
   closeModal('registerModal');
-  showNotif('Conta criada com sucesso! Agora publique seu primeiro anúncio 🎉','');
+  _finishLogin({ name: nome, email, picture: null, city });
+  showNotif(`Conta criada! Bem-vindo(a), ${nome} 🎉`, '');
 }
 
 const ALLOWED_CITIES = ['Jaraguá do Sul', 'Guaramirim', 'Schroeder', 'Massaranduba', 'Corupá'];
